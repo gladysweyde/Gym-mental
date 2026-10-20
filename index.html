@@ -9,6 +9,7 @@
             --primary: #0f766e;
             --primary-dark: #115e59;
             --primary-light: #e6f4f1;
+            --accent: #d97706;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
@@ -34,23 +35,32 @@
             color: white;
             padding: 24px 20px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        header h1 {
             font-size: 1.6rem;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-top: 4px;
         }
 
         .container {
             max-width: 650px;
-            margin: 24px auto;
+            margin: 20px auto;
             padding: 0 16px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 22px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             border: 1px solid var(--border);
         }
@@ -58,7 +68,7 @@
         .card h2 {
             color: var(--primary-dark);
             margin-bottom: 8px;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -68,16 +78,16 @@
             color: var(--text-muted);
             margin-bottom: 16px;
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
@@ -103,18 +113,18 @@
             background-color: #e2e8f0;
         }
 
-        /* Estilo personalizado para subida de audios */
-        .audio-upload-wrapper {
+        /* Contenedor de subida de audios */
+        .audio-box {
             background: var(--primary-light);
             padding: 16px;
             border-radius: 14px;
-            margin-top: 16px;
+            margin-top: 14px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .upload-btn {
+        .upload-label {
             background: white;
             color: var(--primary-dark);
             border: 1px dashed var(--primary);
@@ -125,9 +135,10 @@
             cursor: pointer;
             text-align: center;
             transition: background 0.2s;
+            display: block;
         }
 
-        .upload-btn:hover {
+        .upload-label:hover {
             background: #d1fae5;
         }
 
@@ -137,15 +148,57 @@
 
         audio {
             width: 100%;
-            margin-top: 8px;
-            border-radius: 8px;
+            margin-top: 6px;
         }
 
-        .file-name {
+        .file-info {
             font-size: 0.85rem;
             color: var(--primary-dark);
             font-weight: 500;
-            word-break: break-all;
+        }
+
+        /* Respiración */
+        .breath-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 1.15rem;
+            box-shadow: 0 0 25px rgba(15,118,110,0.18);
+            transition: transform 4s ease-in-out;
+        }
+
+        .circle.expanding {
+            transform: scale(1.35);
+        }
+
+        /* Diario de Gratitud Historial */
+        .gratitude-item {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .gratitude-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: bold;
+            margin-bottom: 4px;
         }
 
         /* Navegación Inferior */
@@ -157,7 +210,7 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0 16px 0;
+            padding: 10px 0 14px 0;
             border-top: 1px solid var(--border);
             box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
             z-index: 1000;
@@ -165,220 +218,4 @@
 
         .nav-item {
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-decoration: none;
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .nav-icon {
-            font-size: 1.3rem;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .view { display: none; }
-        .view.active { display: block; }
-
-        /* Círculo de Respiración */
-        .breath-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-        }
-
-        .circle {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: var(--primary-dark);
-            font-size: 1.2rem;
-            box-shadow: 0 0 25px rgba(15,118,110,0.15);
-            transition: transform 4s ease-in-out;
-        }
-
-        .animating {
-            transform: scale(1.35);
-        }
-    </style>
-</head>
-<body>
-
-    <header>Gimnasio Mental</header>
-
-    <div class="container">
-        
-        <!-- VISTA HOY -->
-        <div id="view-hoy" class="view active">
-            <div class="card">
-                <h2>☀️ Ejercicio del Día</h2>
-                <p id="random-text">Presiona el botón para recibir un ejercicio aleatorio de presencia y foco inspirado en Begoña del Campo.</p>
-                <button class="btn" onclick="generarEjercicioRandom()">🎲 Sortear Ejercicio</button>
-            </div>
-
-            <div class="card">
-                <h2>🌬️ Respiración Consciente</h2>
-                <p>Usa la onda de expansión para acompasar tu inhalación y exhalación.</p>
-                <div class="breath-container">
-                    <div class="circle" id="breath-circle">Inhala</div>
-                    <button class="btn btn-secondary" style="margin-top:24px;" onclick="iniciarRespiracion()">▶️ Iniciar Ciclo (1 Min)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- VISTA SESIONES & AUDIOS -->
-        <div id="view-sesiones" class="view">
-            <div class="card">
-                <h2>🎧 Guión 1: Reset Mental Express</h2>
-                <p><strong>Objetivo:</strong> Salir del modo multitarea.<br><em>"Inhala profundo... suelta los hombros... vuelve al aquí y ahora..."</em></p>
-                <div class="audio-upload-wrapper">
-                    <label class="upload-btn" for="file-1">📁 Seleccionar o Grabar Audio MP3/M4A</label>
-                    <input type="file" id="file-1" accept="audio/*" onchange="cargarAudio(event, 'player-1', 'name-1')">
-                    <span id="name-1" class="file-name"></span>
-                    <audio id="player-1" controls style="display:none;"></audio>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🌙 Guión 5: Dormir & Recordar Sueños</h2>
-                <p><strong>Objetivo:</strong> Reprogramación nocturna con ondas Delta/Theta.<br><em>"Mi descanso es profundo... Al despertar recordaré mis sueños con claridad..."</em></p>
-                <div class="audio-upload-wrapper">
-                    <label class="upload-btn" for="file-5">📁 Seleccionar o Grabar Audio MP3/M4A</label>
-                    <input type="file" id="file-5" accept="audio/*" onchange="cargarAudio(event, 'player-5', 'name-5')">
-                    <span id="name-5" class="file-name"></span>
-                    <audio id="player-5" controls style="display:none;"></audio>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🚆 Guión 4: Manifestación en Movimiento</h2>
-                <p><strong>Objetivo:</strong> Para viajar al banco o trabajar con enfoque Alpha.<br><em>"Mis trámites fluyen con calma y seguridad..."</em></p>
-                <div class="audio-upload-wrapper">
-                    <label class="upload-btn" for="file-4">📁 Seleccionar o Grabar Audio MP3/M4A</label>
-                    <input type="file" id="file-4" accept="audio/*" onchange="cargarAudio(event, 'player-4', 'name-4')">
-                    <span id="name-4" class="file-name"></span>
-                    <audio id="player-4" controls style="display:none;"></audio>
-                </div>
-            </div>
-        </div>
-
-        <!-- VISTA FRECUENCIAS -->
-        <div id="view-progreso" class="view">
-            <div class="card">
-                <h2>🧠 Frecuencias Binaurales (Web Audio)</h2>
-                <p>Selecciona la frecuencia adecuada antes de iniciar tu meditación (usa auriculares):</p>
-                <button class="btn" onclick="tocarFrecuencia(432, 'Theta')">🔮 Activar Onda Theta (Visualización)</button>
-                <button class="btn btn-secondary" style="margin-top:12px;" onclick="tocarFrecuencia(285, 'Delta')">🌙 Activar Onda Delta (Dormir)</button>
-                <button class="btn btn-secondary" style="margin-top:12px;" onclick="detenerFrecuencia()">⏹️ Detener Sonido</button>
-            </div>
-        </div>
-
-        <!-- VISTA GRATITUD -->
-        <div id="view-afirmaciones" class="view">
-            <div class="card">
-                <h2>✨ Diario de Gratitud</h2>
-                <p>1. ¿Qué pequeño detalle salió bien hoy?<br>2. ¿Qué aspecto de tu cuerpo o mente agradeces?<br>3. ¿Qué aprendizaje te llevas?</p>
-                <textarea class="btn-secondary" style="width:100%; height:100px; padding:12px; border-radius:12px; border:1px solid var(--border); font-size:0.95rem; resize:none;" placeholder="Escribe tus reflexiones de hoy..."></textarea>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- NAVEGACIÓN INFERIOR -->
-    <nav>
-        <a class="nav-item active" onclick="cambiarVista('hoy', this)">
-            <span class="nav-icon">☀️</span>Hoy
-        </a>
-        <a class="nav-item" onclick="cambiarVista('sesiones', this)">
-            <span class="nav-icon">🎧</span>Sesiones
-        </a>
-        <a class="nav-item" onclick="cambiarVista('progreso', this)">
-            <span class="nav-icon">🧠</span>Frecuencias
-        </a>
-        <a class="nav-item" onclick="cambiarVista('afirmaciones', this)">
-            <span class="nav-icon">✨</span>Gratitud
-        </a>
-    </nav>
-
-    <script>
-        function cambiarVista(vistaId, elemento) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('view-' + vistaId).classList.add('active');
-            elemento.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function generarEjercicioRandom() {
-            const ejercicios = [
-                "Enfócate 2 minutos en la sensación de la respiración en la entrada de tus fosas nasales.",
-                "Escaneo somático: afloja conscientemente la mandíbula, baja los hombros y suelta las manos.",
-                "Anclaje visual: observa 3 objetos a tu alrededor detallando su textura y color.",
-                "Postura de presencia: alinea tu columna, inhala profundo en 4 segundos y exhala en 6."
-            ];
-            const random = ejercicios[Math.floor(Math.random() * ejercicios.length)];
-            document.getElementById('random-text').innerText = random;
-        }
-
-        function iniciarRespiracion() {
-            const circle = document.getElementById('breath-circle');
-            circle.innerText = "Inhala...";
-            circle.classList.add('animating');
-            setTimeout(() => { circle.innerText = "Sostén"; }, 4000);
-            setTimeout(() => {
-                circle.innerText = "Exhala...";
-                circle.classList.remove('animating');
-            }, 7000);
-            setTimeout(() => { circle.innerText = "Listo"; }, 11000);
-        }
-
-        function cargarAudio(event, playerId, nameId) {
-            const file = event.target.files[0];
-            if (file) {
-                const audioURL = URL.createObjectURL(file);
-                const player = document.getElementById(playerId);
-                const nameLabel = document.getElementById(nameId);
-                
-                player.src = audioURL;
-                player.style.display = 'block';
-                nameLabel.innerText = "🎵 Audio cargado: " + file.name;
-            }
-        }
-
-        let audioCtx = null;
-        function tocarFrecuencia(freq, tipo) {
-            detenerFrecuencia();
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            alert("Reproduciendo frecuencia " + tipo + " (" + freq + " Hz). Conecta tus auriculares.");
-        }
-
-        function detenerFrecuencia() {
-            if (audioCtx) {
-                audioCtx.close();
-                audioCtx = null;
-            }
-        }
-    </script>
-</body>
-</html>
+            color: var(--text
