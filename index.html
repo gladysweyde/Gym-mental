@@ -174,24 +174,40 @@
 
         audio {
             width: 100%;
-            margin-top: 6px;
+            margin-top: 4px;
+        }
+
+        .audio-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
         }
 
         .file-info {
             font-size: 0.85rem;
             color: var(--primary-dark);
             font-weight: 600;
+            word-break: break-all;
         }
 
-        .btn-delete {
-            background: none;
-            border: none;
+        .btn-delete-icon {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
             color: #ef4444;
-            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             cursor: pointer;
-            text-decoration: underline;
-            align-self: flex-start;
-            margin-top: 4px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-delete-icon:hover {
+            background: #fecaca;
+            transform: scale(1.05);
         }
 
         /* Respiración */
@@ -305,70 +321,90 @@
             </div>
         </div>
 
-        <!-- VISTA SESIONES CON PERSISTENCIA DE AUDIO (INDEXEDDB) -->
+        <!-- VISTA SESIONES CON BOTÓN BASURA Y TEXTO CAMBIADO A SESIÓN -->
         <div id="view-sesiones" class="view">
             <div class="card">
-                <h2>🧘 Guión 1: Reset Mental Express</h2>
+                <h2>🧘 Sesión 1: Reset Mental Express</h2>
                 <p><strong>Objetivo:</strong> Regular el sistema nervioso y cortar la rumiación mental.<br><em>"Inhala profundo... suelta hombros y mandíbula... vuelve a tu centro."</em></p>
                 <div class="audio-box">
                     <label class="upload-label" for="file-1">📁 Cargar audio MP3 / M4A</label>
                     <input type="file" id="file-1" accept="audio/*" onchange="guardarAudioEnBD('guion-1', event)">
-                    <span id="info-guion-1" class="file-info"></span>
+                    
+                    <div class="audio-header-info">
+                        <span id="info-guion-1" class="file-info"></span>
+                        <button id="del-guion-1" class="btn-delete-icon" style="display:none;" onclick="eliminarAudioBD('guion-1')" title="Eliminar audio guardado">🗑️</button>
+                    </div>
+                    
                     <audio id="player-guion-1" controls style="display:none;"></audio>
-                    <button id="del-guion-1" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-1')">Eliminar audio guardado</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2>🎯 Guión 2: Enfoque Profundo (Deep Work)</h2>
+                <h2>🎯 Sesión 2: Enfoque Profundo (Deep Work)</h2>
                 <p><strong>Objetivo:</strong> Activar estado de flujo previo a trabajar o estudiar.<br><em>"Mi atención está dirigida a una sola tarea. Elimino distracciones."</em></p>
                 <div class="audio-box">
                     <label class="upload-label" for="file-2">📁 Cargar audio MP3 / M4A</label>
                     <input type="file" id="file-2" accept="audio/*" onchange="guardarAudioEnBD('guion-2', event)">
-                    <span id="info-guion-2" class="file-info"></span>
+                    
+                    <div class="audio-header-info">
+                        <span id="info-guion-2" class="file-info"></span>
+                        <button id="del-guion-2" class="btn-delete-icon" style="display:none;" onclick="eliminarAudioBD('guion-2')" title="Eliminar audio guardado">🗑️</button>
+                    </div>
+
                     <audio id="player-guion-2" controls style="display:none;"></audio>
-                    <button id="del-guion-2" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-2')">Eliminar audio guardado</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2>🍃 Guión 3: Descompresión Post-Trabajo</h2>
+                <h2>🍃 Sesión 3: Descompresión Post-Trabajo</h2>
                 <p><strong>Objetivo:</strong> Cerrar la jornada laboral y separar trabajo de vida personal.<br><em>"Lo que hice hoy fue suficiente. Libero mis pendientes hasta mañana."</em></p>
                 <div class="audio-box">
                     <label class="upload-label" for="file-3">📁 Cargar audio MP3 / M4A</label>
                     <input type="file" id="file-3" accept="audio/*" onchange="guardarAudioEnBD('guion-3', event)">
-                    <span id="info-guion-3" class="file-info"></span>
+                    
+                    <div class="audio-header-info">
+                        <span id="info-guion-3" class="file-info"></span>
+                        <button id="del-guion-3" class="btn-delete-icon" style="display:none;" onclick="eliminarAudioBD('guion-3')" title="Eliminar audio guardado">🗑️</button>
+                    </div>
+
                     <audio id="player-guion-3" controls style="display:none;"></audio>
-                    <button id="del-guion-3" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-3')">Eliminar audio guardado</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2>🚆 Guión 4: Manifestación en Movimiento</h2>
+                <h2>🚆 Sesión 4: Manifestación en Movimiento</h2>
                 <p><strong>Objetivo:</strong> Viajar al banco, caminar o trasladarse con calma y foco Alpha.<br><em>"Camino con firmeza. Mis gestiones fluyen con tranquilidad y efectividad."</em></p>
                 <div class="audio-box">
                     <label class="upload-label" for="file-4">📁 Cargar audio MP3 / M4A</label>
                     <input type="file" id="file-4" accept="audio/*" onchange="guardarAudioEnBD('guion-4', event)">
-                    <span id="info-guion-4" class="file-info"></span>
+                    
+                    <div class="audio-header-info">
+                        <span id="info-guion-4" class="file-info"></span>
+                        <button id="del-guion-4" class="btn-delete-icon" style="display:none;" onclick="eliminarAudioBD('guion-4')" title="Eliminar audio guardado">🗑️</button>
+                    </div>
+
                     <audio id="player-guion-4" controls style="display:none;"></audio>
-                    <button id="del-guion-4" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-4')">Eliminar audio guardado</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2>🌙 Guión 5: Reprogramación Nocturna & Sueños</h2>
+                <h2>🌙 Sesión 5: Reprogramación Nocturna & Sueños</h2>
                 <p><strong>Objetivo:</strong> Inducción al descanso profundo y recuperación de memoria onírica.<br><em>"Mi cuerpo descansa. Mañana al despertar recordaré mis sueños con nitidez."</em></p>
                 <div class="audio-box">
                     <label class="upload-label" for="file-5">📁 Cargar audio MP3 / M4A</label>
                     <input type="file" id="file-5" accept="audio/*" onchange="guardarAudioEnBD('guion-5', event)">
-                    <span id="info-guion-5" class="file-info"></span>
+                    
+                    <div class="audio-header-info">
+                        <span id="info-guion-5" class="file-info"></span>
+                        <button id="del-guion-5" class="btn-delete-icon" style="display:none;" onclick="eliminarAudioBD('guion-5')" title="Eliminar audio guardado">🗑️</button>
+                    </div>
+
                     <audio id="player-guion-5" controls style="display:none;"></audio>
-                    <button id="del-guion-5" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-5')">Eliminar audio guardado</button>
                 </div>
             </div>
         </div>
 
-        <!-- VISTA FRECUENCIAS BINAURALES MEJORADAS -->
+        <!-- VISTA FRECUENCIAS BINAURALES -->
         <div id="view-frecuencias" class="view">
             <div class="card">
                 <h2>🎧 Frecuencias Binaurales Puras</h2>
@@ -411,7 +447,7 @@
             </div>
         </div>
 
-        <!-- VISTA GRATITUD CON GUARDADO POR FECHA -->
+        <!-- VISTA GRATITUD -->
         <div id="view-gratitud" class="view">
             <div class="card">
                 <h2>✨ Anclaje de Gratitud Diario</h2>
@@ -543,7 +579,7 @@
             player.src = url;
             player.style.display = 'block';
             info.innerText = "🎵 Guardado: " + fileName;
-            btnDel.style.display = 'inline-block';
+            btnDel.style.display = 'inline-flex';
         }
 
         function eliminarAudioBD(idGuion) {
@@ -560,7 +596,7 @@
             };
         }
 
-        /* GENERADOR BINAURAL CON TOGGLE LIMPIO */
+        /* GENERADOR BINAURAL */
         let audioCtx = null;
         let leftOsc = null;
         let rightOsc = null;
@@ -594,8 +630,8 @@
             leftOsc.connect(gainL);
             rightOsc.connect(gainR);
 
-            gainL.connect(merger, 0, 0); // Oído Izquierdo
-            gainR.connect(merger, 0, 1); // Oído Derecho
+            gainL.connect(merger, 0, 0);
+            gainR.connect(merger, 0, 1);
 
             merger.connect(audioCtx.destination);
 
@@ -604,7 +640,6 @@
 
             activeFrecId = frecId;
 
-            // Actualizar interfaz
             document.getElementById('badge-' + frecId).innerText = "En reproducción";
             document.getElementById('badge-' + frecId).classList.add('active');
             const btn = document.getElementById('btn-' + frecId);
