@@ -6,208 +6,197 @@
     <title>Gimnasio Mental</title>
     <style>
         :root {
-            --primary: #115e59;
-            --primary-light: #ccfbf1;
-            --accent: #0f766e;
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --primary-light: #e6f4f1;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
-            --text-light: #64748b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; }
-        header { background-color: var(--primary); color: white; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
-        .card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .card h2 { color: var(--primary); margin-bottom: 10px; font-size: 1.25rem; }
-        .card p { color: var(--text-light); margin-bottom: 15px; font-size: 0.95rem; line-height: 1.5; }
-        .btn { background-color: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; margin-top: 10px; display: inline-block; text-align: center; }
-        .btn:hover { background-color: var(--accent); }
-        .btn-secondary { background-color: #e2e8f0; color: var(--text); }
-        .btn-secondary:hover { background-color: #cbd5e1; }
-        
-        /* Audio upload container */
-        .audio-box { background: var(--primary-light); padding: 12px; border-radius: 10px; margin-top: 15px; }
-        .audio-box label { font-size: 0.85rem; font-weight: bold; color: var(--primary); display: block; margin-bottom: 5px; }
-        audio { width: 100%; margin-top: 8px; }
 
-        /* Navigation Bar */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #e2e8f0; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); z-index: 1000; }
-        .nav-item { text-align: center; color: var(--text-light); font-size: 0.75rem; cursor: pointer; text-decoration: none; flex: 1; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-        .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 100px;
+        }
+
+        header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Estilo personalizado para subida de audios */
+        .audio-upload-wrapper {
+            background: var(--primary-light);
+            padding: 16px;
+            border-radius: 14px;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .upload-btn {
+            background: white;
+            color: var(--primary-dark);
+            border: 1px dashed var(--primary);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .upload-btn:hover {
+            background: #d1fae5;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 8px;
+            border-radius: 8px;
+        }
+
+        .file-name {
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        /* Navegación Inferior */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 16px 0;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
         .view { display: none; }
         .view.active { display: block; }
 
-        /* Breathing circle */
-        .breath-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .circle { width: 150px; height: 150px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); font-size: 1.1rem; box-shadow: 0 0 20px rgba(17,94,89,0.2); transition: transform 4s ease-in-out; }
-        .animating { transform: scale(1.4); }
-    </style>
-</head>
-<body>
-
-    <header id="app-header">Gimnasio Mental</header>
-
-    <div class="container">
-        
-        <!-- VISTA HOY -->
-        <div id="view-hoy" class="view active">
-            <div class="card">
-                <h2>⚡ Ejercicio Random del Día</h2>
-                <p id="random-text">Presiona el botón para recibir tu instrucción aleatoria de foco y presencia inspirada en Begoña del Campo.</p>
-                <button class="btn" onclick="generarEjercicioRandom()">Sortear Ejercicio</button>
-            </div>
-
-            <div class="card">
-                <h2>🌬️ Respiración Consciente (Box Breathing)</h2>
-                <div class="breath-container">
-                    <div class="circle" id="breath-circle">Inhala</div>
-                    <button class="btn btn-secondary" style="margin-top:20px;" onclick="iniciarRespiracion()">Iniciar Ciclo (1 Min)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- VISTA SESIONES & GUIONES CON SUBIDA DE AUDIO -->
-        <div id="view-sesiones" class="view">
-            <div class="card">
-                <h2>🎧 Guión 1: Reset Mental Express</h2>
-                <p><strong>Objetivo:</strong> Salir del modo multitarea.<br><em>"Inhala profundo... suelta los hombros... vuelve al aquí y ahora..."</em></p>
-                <div class="audio-box">
-                    <label>Sube tu audio grabado:</label>
-                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-1')">
-                    <audio id="player-1" controls style="display:none;"></audio>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🌙 Guión 5: Dormir & Recordar Sueños</h2>
-                <p><strong>Objetivo:</strong> Reprogramación nocturna con ondas Delta/Theta.<br><em>"Mi descanso es profundo... Al despertar recordaré mis sueños con claridad..."</em></p>
-                <div class="audio-box">
-                    <label>Sube tu audio grabado:</label>
-                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-5')">
-                    <audio id="player-5" controls style="display:none;"></audio>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🚆 Guión 4: Manifestación en Movimiento</h2>
-                <p><strong>Objetivo:</strong> Para viajar al banco o trabajar con enfoque Alpha.<br><em>"Mis trámites fluyen con calma y seguridad..."</em></p>
-                <div class="audio-box">
-                    <label>Sube tu audio grabado:</label>
-                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-4')">
-                    <audio id="player-4" controls style="display:none;"></audio>
-                </div>
-            </div>
-        </div>
-
-        <!-- VISTA PROGRESO / FRECUENCIAS -->
-        <div id="view-progreso" class="view">
-            <div class="card">
-                <h2>🧠 Frecuencias Binaurales (Web Audio)</h2>
-                <p>Selecciona la onda adecuada para tu sesión:</p>
-                <button class="btn" onclick="tocarFrecuencia(432, 'Theta')">Activar Onda Theta (Visualización)</button>
-                <button class="btn btn-secondary" style="margin-top:10px;" onclick="tocarFrecuencia(285, 'Delta')">Activar Onda Delta (Dormir)</button>
-                <button class="btn btn-secondary" style="margin-top:10px;" onclick="detenerFrecuencia()">Detener Sonido</button>
-            </div>
-        </div>
-
-        <!-- VISTA GRATITUD -->
-        <div id="view-afirmaciones" class="view">
-            <div class="card">
-                <h2>✨ Diario de Gratitud</h2>
-                <p>1. ¿Qué pequeño detalle salió bien hoy?<br>2. ¿Qué aspecto de tu cuerpo o mente agradeces?<br>3. ¿Qué aprendizaje te llevas?</p>
-                <textarea class="btn btn-secondary" style="width:100%; height:80px; text-align:left; padding:10px; resize:none;" placeholder="Escribe tus respuestas aquí..."></textarea>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- NAVEGACIÓN INFERIOR -->
-    <nav>
-        <a class="nav-item active" onclick="cambiarVista('hoy', this)">
-            <span class="nav-icon">☀️</span>Hoy
-        </a>
-        <a class="nav-item" onclick="cambiarVista('sesiones', this)">
-            <span class="nav-icon">🎧</span>Sesiones & Audios
-        </a>
-        <a class="nav-item" onclick="cambiarVista('progreso', this)">
-            <span class="nav-icon">🧠</span>Frecuencias
-        </a>
-        <a class="nav-item" onclick="cambiarVista('afirmaciones', this)">
-            <span class="nav-icon">✨</span>Gratitud
-        </a>
-    </nav>
-
-    <script>
-        function cambiarVista(vistaId, elemento) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('view-' + vistaId).classList.add('active');
-            elemento.classList.add('active');
+        /* Círculo de Respiración */
+        .breath-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
         }
 
-        function generarEjercicioRandom() {
-            const ejercicios = [
-                "Enfócate 2 minutos en el punto exacto donde entra el aire por tu nariz.",
-                "Haz un escaneo rápido del cuerpo: afloja mandíbula, hombros y manos ahora mismo.",
-                "Mira a tu alrededor y nombra mentalmente 3 cosas de color verde o azul.",
-                "Postura de poder: estira la espalda, eleva el mentón y respira profundo 3 veces."
-            ];
-            const random = ejercicios[Math.floor(Math.random() * ejercicios.length)];
-            document.getElementById('random-text').innerText = random;
-        }
-
-        function iniciarRespiracion() {
-            const circle = document.getElementById('breath-circle');
-            circle.innerText = "Inhala...";
-            circle.classList.add('animating');
-            setTimeout(() => {
-                circle.innerText = "Sostén";
-            }, 4000);
-            setTimeout(() => {
-                circle.innerText = "Exhala...";
-                circle.classList.remove('animating');
-            }, 7000);
-            setTimeout(() => {
-                circle.innerText = "Listo";
-            }, 11000);
-        }
-
-        // Subir y reproducir audio localmente en cada tarjeta
-        function cargarAudio(event, playerId) {
-            const file = event.target.files[0];
-            if (file) {
-                const audioURL = URL.createObjectURL(file);
-                const player = document.getElementById(playerId);
-                player.src = audioURL;
-                player.style.display = 'block';
-            }
-        }
-
-        // Sintetizador de Frecuencias Binaurales simples
-        let audioCtx = null;
-        function tocarFrecuencia(freq, tipo) {
-            detenerFrecuencia();
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); // Volumen suave
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            alert("Reproduciendo frecuencia " + tipo + " (" + freq + " Hz). Usa auriculares para mejor efecto.");
-        }
-
-        function detenerFrecuencia() {
-            if (audioCtx) {
-                audioCtx.close();
-                audioCtx = null;
-            }
-        }
-    </script>
-</body>
-</html>
+        .circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: var(--
