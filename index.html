@@ -5,129 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gimnasio Mental</title>
     <style>
-        /* Variables de Diseño y Colores */
         :root {
             --primary: #0f766e;
             --primary-dark: #115e59;
             --primary-light: #e6f4f1;
-            --primary-glow: rgba(15, 118, 110, 0.25);
             --accent: #d97706;
             --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --text: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-            --shadow-md: 0 8px 30px rgba(15, 23, 42, 0.06);
+            --active-bg: #d1fae5;
         }
 
-        /* Reset Básico */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--text-main);
+            color: var(--text);
             padding-bottom: 110px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* Encabezado Superior */
         header {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            background-color: var(--primary-dark);
             color: white;
-            padding: 28px 20px 22px 20px;
+            padding: 24px 20px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(15, 118, 110, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         header h1 {
-            font-size: 1.55rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 700;
             letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         header p {
             font-size: 0.85rem;
-            opacity: 0.9;
+            opacity: 0.85;
             margin-top: 4px;
-            font-weight: 500;
             text-transform: capitalize;
         }
 
-        /* Contenedor Principal */
         .container {
-            width: 100%;
-            max-width: 620px;
-            padding: 20px 16px;
+            max-width: 650px;
+            margin: 20px auto;
+            padding: 0 16px;
         }
 
-        /* Tarjetas (Cards) */
         .card {
             background: var(--card-bg);
-            border-radius: var(--radius-lg);
+            border-radius: 20px;
             padding: 22px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             border: 1px solid var(--border);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
         }
 
         .card h2 {
             color: var(--primary-dark);
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            line-height: 1.3;
         }
 
-        .card p.desc {
+        .card p {
             color: var(--text-muted);
-            font-size: 0.92rem;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
             line-height: 1.5;
-            margin-bottom: 16px;
         }
 
-        .card em.quote {
-            display: block;
-            background: #f1f5f9;
-            padding: 10px 14px;
-            border-left: 3px solid var(--primary);
-            border-radius: 6px;
-            font-style: italic;
-            font-size: 0.88rem;
-            color: #334155;
-            margin-bottom: 16px;
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: #e2e8f0;
+            color: var(--text-muted);
         }
 
-        /* Botones Estilizados */
+        .status-badge.active {
+            background: var(--active-bg);
+            color: var(--primary-dark);
+        }
+
         .btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 13px 20px;
-            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            border-radius: 12px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
@@ -137,704 +115,558 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
-        .btn:active {
-            transform: scale(0.98);
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-stop {
+            background-color: #ef4444;
+        }
+
+        .btn-stop:hover {
+            background-color: #dc2626;
         }
 
         .btn-secondary {
             background-color: #f1f5f9;
-            color: var(--text-main);
+            color: var(--text);
             border: 1px solid var(--border);
-            box-shadow: none;
         }
 
-        .btn-danger {
-            background-color: #ef4444;
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
         }
 
-        /* Carga de Audio y Reproductor */
-        .upload-wrapper {
-            margin-top: 14px;
+        .audio-box {
             background: var(--primary-light);
-            border: 1.5px dashed var(--primary);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            text-align: center;
+            padding: 16px;
+            border-radius: 14px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .upload-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .upload-label {
             background: white;
             color: var(--primary-dark);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.88rem;
+            border: 1px dashed var(--primary);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            transition: background 0.2s ease;
+            text-align: center;
+            transition: background 0.2s;
+            display: block;
         }
 
-        .upload-btn:hover {
-            background: #f8fafc;
+        .upload-label:hover {
+            background: #d1fae5;
         }
 
         input[type="file"] {
             display: none;
         }
 
-        .audio-player-container {
-            margin-top: 12px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .audio-player-container.active {
-            display: block;
-        }
-
         audio {
             width: 100%;
-            height: 42px;
-            border-radius: 8px;
-            outline: none;
+            margin-top: 6px;
         }
 
-        .file-name {
-            font-size: 0.8rem;
+        .file-info {
+            font-size: 0.85rem;
             color: var(--primary-dark);
             font-weight: 600;
-            margin-bottom: 6px;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        /* Círculo de Respiración Box Breathing */
-        .breath-container {
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+            align-self: flex-start;
+            margin-top: 4px;
+        }
+
+        /* Respiración */
+        .breath-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0 10px 0;
+            padding: 15px 0;
         }
 
-        .breath-circle-outer {
-            width: 180px;
-            height: 180px;
+        .circle {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             background: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 20px rgba(15, 118, 110, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .breath-circle {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 0 25px var(--primary-glow);
-            transition: transform 4s linear, background-color 0.5s ease;
-            text-align: center;
-            padding: 10px;
+            color: var(--primary-dark);
+            font-size: 1.15rem;
+            box-shadow: 0 0 25px rgba(15,118,110,0.18);
+            transition: transform 4s ease-in-out;
         }
 
-        .breath-circle .phase-timer {
-            font-size: 0.8rem;
-            font-weight: 400;
-            opacity: 0.85;
-            margin-top: 2px;
-        }
-
-        .breath-circle.expand {
+        .circle.expanding {
             transform: scale(1.35);
-            background-color: var(--primary-dark);
         }
 
-        .breath-circle.hold {
-            transform: scale(1.35);
-            background-color: #0d9488;
-        }
-
-        .breath-circle.contract {
-            transform: scale(1);
-            background-color: var(--primary);
-        }
-
-        /* Estado de Frecuencias */
-        .freq-card {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .freq-status {
-            font-size: 0.82rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 12px;
-            background: #e2e8f0;
-            color: var(--text-muted);
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        .freq-status.playing {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        /* Diario de Gratitud */
-        textarea {
-            width: 100%;
-            height: 110px;
-            padding: 14px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            font-size: 0.93rem;
-            color: var(--text-main);
-            outline: none;
-            resize: none;
-            margin-bottom: 12px;
-            transition: border-color 0.2s ease;
-            background: #fafafa;
-        }
-
-        textarea:focus {
-            border-color: var(--primary);
-            background: white;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .history-item {
+        /* Gratitud */
+        .gratitude-item {
             background: #f8fafc;
             border-left: 4px solid var(--primary);
-            padding: 12px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            border-left-width: 4px;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
         }
 
-        .history-date {
+        .gratitude-date {
             font-size: 0.75rem;
             color: var(--text-muted);
-            font-weight: 700;
+            font-weight: bold;
             margin-bottom: 4px;
         }
 
-        .history-text {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            color: var(--text-main);
-            white-space: pre-wrap;
-        }
-
-        /* Navegación Inferior Fija */
+        /* Navegación */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             display: flex;
             justify-content: space-around;
             padding: 10px 0 14px 0;
             border-top: 1px solid var(--border);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
             z-index: 1000;
         }
 
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
             color: var(--text-muted);
             font-size: 0.75rem;
-            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             flex: 1;
-            transition: color 0.2s ease;
+            font-weight: 500;
         }
 
         .nav-item.active {
             color: var(--primary);
+            font-weight: 700;
         }
 
         .nav-icon {
-            font-size: 1.35rem;
-            margin-bottom: 3px;
-        }
-
-        /* Control de Vistas */
-        .view {
-            display: none;
-            animation: fadeIn 0.25 ease-in-out;
-        }
-
-        .view.active {
+            font-size: 1.3rem;
             display: block;
+            margin-bottom: 2px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .view { display: none; }
+        .view.active { display: block; }
     </style>
 </head>
 <body>
 
-    <!-- Header Principal -->
     <header>
         <h1>🧠 Gimnasio Mental</h1>
-        <p id="header-date">Cargando fecha...</p>
+        <p id="current-date">Cargando fecha...</p>
     </header>
 
     <div class="container">
-
-        <!-- ☀️ PESTAÑA: HOY -->
+        
+        <!-- VISTA HOY -->
         <div id="view-hoy" class="view active">
-            
-            <!-- Ejercicio del Día -->
             <div class="card">
                 <h2>☀️ Práctica del Día</h2>
-                <p class="desc" id="exercise-text">Toca el botón para recibir un micro-ejercicio aleatorio de presencia consciente e intencionalidad inspirado en Begoña del Campo.</p>
-                <button class="btn" onclick="sortearEjercicio()">🎲 Sortear Ejercicio</button>
+                <p id="random-text">Toca el botón para recibir un micro-ejercicio de presencia consciente e intencionalidad somática.</p>
+                <button class="btn" onclick="generarEjercicioRandom()">🎲 Generar Ejercicio Aleatorio</button>
             </div>
 
-            <!-- Box Breathing -->
             <div class="card">
-                <h2>🌬️ Respiración Somática (Box Breathing)</h2>
-                <p class="desc">Acompasa tu sistema nervioso con este ciclo de 4 fases (4s Inhala - 4s Sostén - 4s Exhala - 4s Sostén).</p>
-                <div class="breath-container">
-                    <div class="breath-circle-outer">
-                        <div class="breath-circle" id="breath-circle">
-                            <span id="breath-phase">Listo</span>
-                            <span class="phase-timer" id="breath-timer"></span>
-                        </div>
-                    </div>
-                    <button class="btn btn-secondary" id="breath-btn" onclick="toggleRespiracion()">▶️ Iniciar Respiración</button>
+                <h2>🌬️ Respiración Consciente (Box Breathing)</h2>
+                <p>Usa la expansión visual para regular tu ritmo cardíaco y calmar el sistema nervioso.</p>
+                <div class="breath-wrapper">
+                    <div class="circle" id="breath-circle">Inhala</div>
+                    <button class="btn btn-secondary" style="margin-top:20px;" onclick="iniciarRespiracion()">▶️ Iniciar Ciclo (1 Minuto)</button>
                 </div>
             </div>
-
         </div>
 
-        <!-- 🎧 PESTAÑA: SESIONES -->
+        <!-- VISTA SESIONES CON PERSISTENCIA DE AUDIO (INDEXEDDB) -->
         <div id="view-sesiones" class="view">
-            
-            <!-- Guión 1 -->
             <div class="card">
                 <h2>🧘 Guión 1: Reset Mental Express</h2>
-                <p class="desc"><strong>Objetivo:</strong> Regular el sistema nervioso y cortar la rumiación mental rápida.</p>
-                <em class="quote">"Inhala profundo... suelta hombros y mandíbula... vuelve a tu centro."</em>
-                <div class="upload-wrapper">
-                    <label class="upload-btn">
-                        📁 Cargar audio MP3 / M4A
-                        <input type="file" accept="audio/*" onchange="handleAudioUpload(event, 'player-container-1', 'audio-1', 'name-1')">
-                    </label>
-                    <div class="audio-player-container" id="player-container-1">
-                        <span class="file-name" id="name-1"></span>
-                        <audio id="audio-1" controls></audio>
-                    </div>
+                <p><strong>Objetivo:</strong> Regular el sistema nervioso y cortar la rumiación mental.<br><em>"Inhala profundo... suelta hombros y mandíbula... vuelve a tu centro."</em></p>
+                <div class="audio-box">
+                    <label class="upload-label" for="file-1">📁 Cargar audio MP3 / M4A</label>
+                    <input type="file" id="file-1" accept="audio/*" onchange="guardarAudioEnBD('guion-1', event)">
+                    <span id="info-guion-1" class="file-info"></span>
+                    <audio id="player-guion-1" controls style="display:none;"></audio>
+                    <button id="del-guion-1" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-1')">Eliminar audio guardado</button>
                 </div>
             </div>
 
-            <!-- Guión 2 -->
             <div class="card">
                 <h2>🎯 Guión 2: Enfoque Profundo (Deep Work)</h2>
-                <p class="desc"><strong>Objetivo:</strong> Activar estado de flujo previo a trabajar o estudiar sin distracciones.</p>
-                <em class="quote">"Mi atención está dirigida a una sola tarea. Elimino lo innecesario."</em>
-                <div class="upload-wrapper">
-                    <label class="upload-btn">
-                        📁 Cargar audio MP3 / M4A
-                        <input type="file" accept="audio/*" onchange="handleAudioUpload(event, 'player-container-2', 'audio-2', 'name-2')">
-                    </label>
-                    <div class="audio-player-container" id="player-container-2">
-                        <span class="file-name" id="name-2"></span>
-                        <audio id="audio-2" controls></audio>
-                    </div>
+                <p><strong>Objetivo:</strong> Activar estado de flujo previo a trabajar o estudiar.<br><em>"Mi atención está dirigida a una sola tarea. Elimino distracciones."</em></p>
+                <div class="audio-box">
+                    <label class="upload-label" for="file-2">📁 Cargar audio MP3 / M4A</label>
+                    <input type="file" id="file-2" accept="audio/*" onchange="guardarAudioEnBD('guion-2', event)">
+                    <span id="info-guion-2" class="file-info"></span>
+                    <audio id="player-guion-2" controls style="display:none;"></audio>
+                    <button id="del-guion-2" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-2')">Eliminar audio guardado</button>
                 </div>
             </div>
 
-            <!-- Guión 3 -->
             <div class="card">
                 <h2>🍃 Guión 3: Descompresión Post-Trabajo</h2>
-                <p class="desc"><strong>Objetivo:</strong> Cerrar la jornada laboral y separar el trabajo de la vida personal.</p>
-                <em class="quote">"Lo que hice hoy fue suficiente. Libero mis pendientes hasta mañana."</em>
-                <div class="upload-wrapper">
-                    <label class="upload-btn">
-                        📁 Cargar audio MP3 / M4A
-                        <input type="file" accept="audio/*" onchange="handleAudioUpload(event, 'player-container-3', 'audio-3', 'name-3')">
-                    </label>
-                    <div class="audio-player-container" id="player-container-3">
-                        <span class="file-name" id="name-3"></span>
-                        <audio id="audio-3" controls></audio>
-                    </div>
+                <p><strong>Objetivo:</strong> Cerrar la jornada laboral y separar trabajo de vida personal.<br><em>"Lo que hice hoy fue suficiente. Libero mis pendientes hasta mañana."</em></p>
+                <div class="audio-box">
+                    <label class="upload-label" for="file-3">📁 Cargar audio MP3 / M4A</label>
+                    <input type="file" id="file-3" accept="audio/*" onchange="guardarAudioEnBD('guion-3', event)">
+                    <span id="info-guion-3" class="file-info"></span>
+                    <audio id="player-guion-3" controls style="display:none;"></audio>
+                    <button id="del-guion-3" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-3')">Eliminar audio guardado</button>
                 </div>
             </div>
 
-            <!-- Guión 4 -->
             <div class="card">
                 <h2>🚆 Guión 4: Manifestación en Movimiento</h2>
-                <p class="desc"><strong>Objetivo:</strong> Usar durante traslados o trámites para mantener serenidad y firmeza.</p>
-                <em class="quote">"Camino con firmeza. Mis gestiones fluyen con tranquilidad y efectividad."</em>
-                <div class="upload-wrapper">
-                    <label class="upload-btn">
-                        📁 Cargar audio MP3 / M4A
-                        <input type="file" accept="audio/*" onchange="handleAudioUpload(event, 'player-container-4', 'audio-4', 'name-4')">
-                    </label>
-                    <div class="audio-player-container" id="player-container-4">
-                        <span class="file-name" id="name-4"></span>
-                        <audio id="audio-4" controls></audio>
-                    </div>
+                <p><strong>Objetivo:</strong> Viajar al banco, caminar o trasladarse con calma y foco Alpha.<br><em>"Camino con firmeza. Mis gestiones fluyen con tranquilidad y efectividad."</em></p>
+                <div class="audio-box">
+                    <label class="upload-label" for="file-4">📁 Cargar audio MP3 / M4A</label>
+                    <input type="file" id="file-4" accept="audio/*" onchange="guardarAudioEnBD('guion-4', event)">
+                    <span id="info-guion-4" class="file-info"></span>
+                    <audio id="player-guion-4" controls style="display:none;"></audio>
+                    <button id="del-guion-4" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-4')">Eliminar audio guardado</button>
                 </div>
             </div>
 
-            <!-- Guión 5 -->
             <div class="card">
                 <h2>🌙 Guión 5: Reprogramación Nocturna & Sueños</h2>
-                <p class="desc"><strong>Objetivo:</strong> Inducción al descanso profundo y recuperación de memoria onírica.</p>
-                <em class="quote">"Mi cuerpo descansa. Mañana al despertar recordaré mis sueños con nitidez."</em>
-                <div class="upload-wrapper">
-                    <label class="upload-btn">
-                        📁 Cargar audio MP3 / M4A
-                        <input type="file" accept="audio/*" onchange="handleAudioUpload(event, 'player-container-5', 'audio-5', 'name-5')">
-                    </label>
-                    <div class="audio-player-container" id="player-container-5">
-                        <span class="file-name" id="name-5"></span>
-                        <audio id="audio-5" controls></audio>
-                    </div>
+                <p><strong>Objetivo:</strong> Inducción al descanso profundo y recuperación de memoria onírica.<br><em>"Mi cuerpo descansa. Mañana al despertar recordaré mis sueños con nitidez."</em></p>
+                <div class="audio-box">
+                    <label class="upload-label" for="file-5">📁 Cargar audio MP3 / M4A</label>
+                    <input type="file" id="file-5" accept="audio/*" onchange="guardarAudioEnBD('guion-5', event)">
+                    <span id="info-guion-5" class="file-info"></span>
+                    <audio id="player-guion-5" controls style="display:none;"></audio>
+                    <button id="del-guion-5" class="btn-delete" style="display:none;" onclick="eliminarAudioBD('guion-5')">Eliminar audio guardado</button>
                 </div>
             </div>
-
         </div>
 
-        <!-- 🧠 PESTAÑA: FRECUENCIAS -->
+        <!-- VISTA FRECUENCIAS BINAURALES MEJORADAS -->
         <div id="view-frecuencias" class="view">
-            
             <div class="card">
-                <h2>🎧 Frecuencias Binaurales (Sintetizador)</h2>
-                <p class="desc">Genera frecuencias sinusoidales directas usando el motor Web Audio API. <strong>Se recomienda el uso de auriculares stereo</strong> para obtener el máximo beneficio neurológico.</p>
-                <button class="btn btn-danger" onclick="detenerSonido()">⏹️ Detener Sonidos</button>
+                <h2>🎧 Frecuencias Binaurales Puras</h2>
+                <p>Usa auriculares estéreo. Al tocar un botón se activará la pulsación correspondiente. Toca de nuevo el mismo botón para desactivarla.</p>
             </div>
 
-            <!-- Onda Theta -->
-            <div class="card freq-card">
-                <div>
-                    <span class="freq-status" id="status-432">Inactivo</span>
-                    <h2>🔮 Onda Theta (432 Hz)</h2>
-                </div>
-                <p class="desc">Favorece la meditación profunda, la reducción del estrés y la creatividad somática.</p>
-                <button class="btn" onclick="activarFrecuencia(432, 'status-432')">▶️ Activar Onda Theta</button>
+            <div class="card">
+                <span id="badge-delta" class="status-badge">Inactivo</span>
+                <h2>🌙 Onda Delta (2 Hz - Inducción al Sueño)</h2>
+                <p>Estimula el sueño profundo, la restauración inmunológica y la liberación de estrés acumulado.</p>
+                <button id="btn-delta" class="btn" onclick="toggleFrecuencia('delta', 200, 202, 'Delta')">▶️ Activar Onda Delta</button>
             </div>
 
-            <!-- Onda Delta -->
-            <div class="card freq-card">
-                <div>
-                    <span class="freq-status" id="status-285">Inactivo</span>
-                    <h2>🌙 Onda Delta (285 Hz)</h2>
-                </div>
-                <p class="desc">Sintonización asociada a la regeneración celular y la preparación para un sueño reparador.</p>
-                <button class="btn" onclick="activarFrecuencia(285, 'status-285')">▶️ Activar Onda Delta</button>
+            <div class="card">
+                <span id="badge-theta" class="status-badge">Inactivo</span>
+                <h2>🔮 Onda Theta (6 Hz - Meditación & Sueños)</h2>
+                <p>Favorece la meditación profunda, la reducción de ansiedad, la creatividad somática y el recuerdo de sueños.</p>
+                <button id="btn-theta" class="btn" onclick="toggleFrecuencia('theta', 200, 206, 'Theta')">▶️ Activar Onda Theta</button>
             </div>
 
-            <!-- Onda Alpha -->
-            <div class="card freq-card">
-                <div>
-                    <span class="freq-status" id="status-10">Inactivo</span>
-                    <h2>⚡ Onda Alpha (10 Hz)</h2>
-                </div>
-                <p class="desc">Promueve el aprendizaje acelerado, el enfoque sin ansiedad y la calma alerta.</p>
-                <button class="btn" onclick="activarFrecuencia(10, 'status-10')">▶️ Activar Onda Alpha</button>
+            <div class="card">
+                <span id="badge-alpha" class="status-badge">Inactivo</span>
+                <h2>🍃 Onda Alpha (10 Hz - Enfoque Relajado)</h2>
+                <p>Induce a un estado de calma consciente, ideal para lecturas, traslados o caminatas.</p>
+                <button id="btn-alpha" class="btn" onclick="toggleFrecuencia('alpha', 200, 210, 'Alpha')">▶️ Activar Onda Alpha</button>
             </div>
 
+            <div class="card">
+                <span id="badge-beta" class="status-badge">Inactivo</span>
+                <h2>⚡ Onda Beta (20 Hz - Concentración Activa)</h2>
+                <p>Aumenta el nivel de alerta, la resolución de problemas y el rendimiento cognitivo activo.</p>
+                <button id="btn-beta" class="btn" onclick="toggleFrecuencia('beta', 200, 220, 'Beta')">▶️ Activar Onda Beta</button>
+            </div>
+
+            <div class="card">
+                <span id="badge-gamma" class="status-badge">Inactivo</span>
+                <h2>🚀 Onda Gamma (40 Hz - Hiperfoco & Intuición)</h2>
+                <p>Asociada al procesamiento de alta velocidad, la integración de conocimientos e intuición profunda.</p>
+                <button id="btn-gamma" class="btn" onclick="toggleFrecuencia('gamma', 200, 240, 'Gamma')">▶️ Activar Onda Gamma</button>
+            </div>
         </div>
 
-        <!-- ✨ PESTAÑA: GRATITUD -->
+        <!-- VISTA GRATITUD CON GUARDADO POR FECHA -->
         <div id="view-gratitud" class="view">
-            
             <div class="card">
-                <h2>✨ Diario de Gratitud Diario</h2>
-                <p class="desc">Registra 3 aspectos, aprendizajes o vivencias por las que sientas gratitud en este día.</p>
-                <textarea id="gratitude-input" placeholder="1. Un pequeño detalle de hoy...&#10;2. Algo sobre mi salud o cuerpo...&#10;3. Un aprendizaje valioso..."></textarea>
+                <h2>✨ Anclaje de Gratitud Diario</h2>
+                <p>Reflexiona antes de dormir en estos 3 puntos:</p>
+                <textarea id="gratitude-input" style="width:100%; height:110px; padding:12px; border-radius:12px; border:1px solid var(--border); font-size:0.95rem; resize:none; margin-bottom:12px;" placeholder="1. Un detalle positivo de hoy...&#10;2. Algo de mi cuerpo o salud que agradezco...&#10;3. Un aprendizaje valioso..."></textarea>
                 <button class="btn" onclick="guardarGratitud()">💾 Guardar Reflexión de Hoy</button>
             </div>
 
             <div class="card">
                 <h2>📜 Historial de Reflexiones</h2>
-                <div class="history-list" id="gratitude-history">
-                    <p style="font-size:0.88rem; color:var(--text-muted);">No hay entradas guardadas aún.</p>
+                <div id="gratitude-history">
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes entradas guardadas.</p>
                 </div>
             </div>
-
         </div>
 
     </div>
 
-    <!-- Navegación Inferior Fija -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <nav>
         <a class="nav-item active" onclick="cambiarVista('hoy', this)">
-            <span class="nav-icon">☀️</span>
-            <span>Hoy</span>
+            <span class="nav-icon">☀️</span>Hoy
         </a>
         <a class="nav-item" onclick="cambiarVista('sesiones', this)">
-            <span class="nav-icon">🎧</span>
-            <span>Sesiones</span>
+            <span class="nav-icon">🎧</span>Sesiones
         </a>
         <a class="nav-item" onclick="cambiarVista('frecuencias', this)">
-            <span class="nav-icon">🧠</span>
-            <span>Frecuencias</span>
+            <span class="nav-icon">🧠</span>Frecuencias
         </a>
         <a class="nav-item" onclick="cambiarVista('gratitud', this)">
-            <span class="nav-icon">✨</span>
-            <span>Gratitud</span>
+            <span class="nav-icon">✨</span>Gratitud
         </a>
     </nav>
 
-    <!-- Scripts de la Aplicación -->
     <script>
-        // --- 1. CONFIGURACIÓN INICIAL Y FECHA ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const fechaActual = new Date();
-            const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('header-date').innerText = fechaActual.toLocaleDateString('es-ES', opciones);
-            cargarHistorialGratitud();
-        });
+        // Fecha en el Header
+        const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', opcionesFecha);
 
-        // --- 2. NAVEGACIÓN ENTRE VISTAS ---
         function cambiarVista(vistaId, elemento) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById('view-' + vistaId).classList.add('active');
             elemento.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- 3. PESTAÑA HOY: EJERCICIOS ALEATORIOS ---
-        const ejerciciosBego = [
-            "Anclaje Somático: Toca tus pulgares con cada dedo contando de 1 a 4. Inhala profundo y afloja la mandíbula.",
-            "Escaneo de Presencia: Nombra en silencio 3 sonidos lejanos y 2 texturas que estés tocando ahora mismo.",
-            "Respiración de Cierre: Realiza 3 exhalaciones sonoras prolongadas soltando los hombros completamente.",
-            "Pausa de Conciencia: Pon una mano sobre el pecho y siente el latido de tu corazón durante 45 segundos.",
-            "Visualización Ligera: Imagina que al exhalar liberas el cansancio acumulado en tu cuello como un vapor leve."
-        ];
-
-        function sortearEjercicio() {
-            const index = Math.floor(Math.random() * ejerciciosBego.length);
-            document.getElementById('exercise-text').innerText = ejerciciosBego[index];
-        }
-
-        // --- 4. PESTAÑA HOY: BOX BREATHING ---
-        let breathInterval = null;
-        let isBreathing = false;
-
-        function toggleRespiracion() {
-            const btn = document.getElementById('breath-btn');
-            if (isBreathing) {
-                detenerRespiracion();
-                btn.innerText = "▶️ Iniciar Respiración";
-            } else {
-                iniciarRespiracion();
-                btn.innerText = "⏹️ Detener Respiración";
-            }
+        function generarEjercicioRandom() {
+            const ejercicios = [
+                "Observa tu respiración durante 2 minutos sin intentar cambiarla.",
+                "Realiza 3 exhalaciones profundas por la boca soltando la tensión del cuello.",
+                "Pon tus manos sobre el pecho y siente el latido de tu corazón por 60 segundos.",
+                "Escaneo somático: afloja mandíbula, desciende hombros y relaja las manos.",
+                "Agradece en silencio una cosa simple que tengas a la vista en este momento."
+            ];
+            const random = ejercicios[Math.floor(Math.random() * ejercicios.length)];
+            document.getElementById('random-text').innerText = random;
         }
 
         function iniciarRespiracion() {
-            isBreathing = true;
             const circle = document.getElementById('breath-circle');
-            const phaseTxt = document.getElementById('breath-phase');
-            const timerTxt = document.getElementById('breath-timer');
+            circle.innerText = "Inhala...";
+            circle.classList.add('expanding');
+            
+            setTimeout(() => { circle.innerText = "Sostén"; }, 4000);
+            setTimeout(() => {
+                circle.innerText = "Exhala...";
+                circle.classList.remove('expanding');
+            }, 7000);
+            setTimeout(() => { circle.innerText = "Sostén"; }, 11000);
+            setTimeout(() => { circle.innerText = "Listo"; }, 15000);
+        }
 
-            const fases = [
-                { nombre: "Inhala", clase: "expand", duracion: 4 },
-                { nombre: "Sostén", clase: "hold", duracion: 4 },
-                { nombre: "Exhala", clase: "contract", duracion: 4 },
-                { nombre: "Sostén", clase: "hold", duracion: 4 }
-            ];
-
-            let faseIdx = 0;
-            let segundo = fases[0].duracion;
-
-            function ejecutarCiclo() {
-                const fase = fases[faseIdx];
-                phaseTxt.innerText = fase.nombre;
-                timerTxt.innerText = segundo + "s";
-
-                circle.className = "breath-circle " + fase.clase;
-
-                breathInterval = setInterval(() => {
-                    segundo--;
-                    if (segundo > 0) {
-                        timerTxt.innerText = segundo + "s";
-                    } else {
-                        clearInterval(breathInterval);
-                        faseIdx = (faseIdx + 1) % fases.length;
-                        segundo = fases[faseIdx].duracion;
-                        if (isBreathing) ejecutarCiclo();
-                    }
-                }, 1000);
+        /* PERSISTENCIA DE AUDIOS MEDIANTE INDEXEDDB */
+        let db;
+        const request = indexedDB.open("GymMentalAudioDB", 1);
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("audios")) {
+                db.createObjectStore("audios", { keyPath: "id" });
             }
+        };
+        request.onsuccess = function(e) {
+            db = e.target.result;
+            cargarAudiosGuardados();
+        };
 
-            ejecutarCiclo();
-        }
-
-        function detenerRespiracion() {
-            isBreathing = false;
-            clearInterval(breathInterval);
-            const circle = document.getElementById('breath-circle');
-            document.getElementById('breath-phase').innerText = "Listo";
-            document.getElementById('breath-timer').innerText = "";
-            circle.className = "breath-circle";
-        }
-
-        // --- 5. PESTAÑA SESIONES: CARGA DE AUDIO LOCAL ---
-        function handleAudioUpload(event, containerId, audioId, nameId) {
+        function guardarAudioEnBD(idGuion, event) {
             const file = event.target.files[0];
-            if (file) {
-                const objectURL = URL.createObjectURL(file);
-                const audioPlayer = document.getElementById(audioId);
-                const container = document.getElementById(containerId);
-                const nameSpan = document.getElementById(nameId);
+            if (!file) return;
 
-                audioPlayer.src = objectURL;
-                nameSpan.innerText = "🎵 Archivo: " + file.name;
-                container.classList.add('active');
-            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                const transaction = db.transaction(["audios"], "readwrite");
+                const store = transaction.objectStore("audios");
+                store.put({ id: idGuion, fileName: file.name, data: arrayBuffer, type: file.type });
+                
+                transaction.oncomplete = function() {
+                    mostrarAudioEnPantalla(idGuion, file.name, arrayBuffer, file.type);
+                };
+            };
+            reader.readAsArrayBuffer(file);
         }
 
-        // --- 6. PESTAÑA FRECUENCIAS: WEB AUDIO API ---
-        let audioCtx = null;
-        let activeOscillator = null;
+        function cargarAudiosGuardados() {
+            if (!db) return;
+            const transaction = db.transaction(["audios"], "readonly");
+            const store = transaction.objectStore("audios");
+            
+            ["guion-1", "guion-2", "guion-3", "guion-4", "guion-5"].forEach(id => {
+                const req = store.get(id);
+                req.onsuccess = function() {
+                    if (req.result) {
+                        mostrarAudioEnPantalla(id, req.result.fileName, req.result.data, req.result.type);
+                    }
+                };
+            });
+        }
 
-        function activarFrecuencia(freq, statusId) {
+        function mostrarAudioEnPantalla(idGuion, fileName, arrayBuffer, type) {
+            const blob = new Blob([arrayBuffer], { type: type });
+            const url = URL.createObjectURL(blob);
+            
+            const player = document.getElementById('player-' + idGuion);
+            const info = document.getElementById('info-' + idGuion);
+            const btnDel = document.getElementById('del-' + idGuion);
+
+            player.src = url;
+            player.style.display = 'block';
+            info.innerText = "🎵 Guardado: " + fileName;
+            btnDel.style.display = 'inline-block';
+        }
+
+        function eliminarAudioBD(idGuion) {
+            if (!confirm("¿Deseas eliminar esta grabación guardada?")) return;
+            const transaction = db.transaction(["audios"], "readwrite");
+            const store = transaction.objectStore("audios");
+            store.delete(idGuion);
+
+            transaction.oncomplete = function() {
+                document.getElementById('player-' + idGuion).style.display = 'none';
+                document.getElementById('player-' + idGuion).src = '';
+                document.getElementById('info-' + idGuion).innerText = '';
+                document.getElementById('del-' + idGuion).style.display = 'none';
+            };
+        }
+
+        /* GENERADOR BINAURAL CON TOGGLE LIMPIO */
+        let audioCtx = null;
+        let leftOsc = null;
+        let rightOsc = null;
+        let activeFrecId = null;
+
+        function toggleFrecuencia(frecId, freqL, freqR, nombre) {
+            if (activeFrecId === frecId) {
+                detenerSonido();
+                return;
+            }
+
             detenerSonido();
 
-            // Resetear indicadores visuales
-            document.querySelectorAll('.freq-status').forEach(s => {
-                s.innerText = "Inactivo";
-                s.classList.remove('playing');
-            });
-
-            // Inicializar Web Audio API
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            activeOscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+            const merger = audioCtx.createChannelMerger(2);
 
-            activeOscillator.type = 'sine';
-            activeOscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            leftOsc = audioCtx.createOscillator();
+            rightOsc = audioCtx.createOscillator();
 
-            // Volumen suave para no saturar
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            leftOsc.type = 'sine';
+            rightOsc.type = 'sine';
 
-            activeOscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
+            leftOsc.frequency.setValueAtTime(freqL, audioCtx.currentTime);
+            rightOsc.frequency.setValueAtTime(freqR, audioCtx.currentTime);
 
-            activeOscillator.start();
+            const gainL = audioCtx.createGain();
+            const gainR = audioCtx.createGain();
+            gainL.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            gainR.gain.setValueAtTime(0.04, audioCtx.currentTime);
 
-            // Actualizar indicador
-            const statusEl = document.getElementById(statusId);
-            statusEl.innerText = "En reproducción (" + freq + " Hz)";
-            statusEl.classList.add('playing');
+            leftOsc.connect(gainL);
+            rightOsc.connect(gainR);
+
+            gainL.connect(merger, 0, 0); // Oído Izquierdo
+            gainR.connect(merger, 0, 1); // Oído Derecho
+
+            merger.connect(audioCtx.destination);
+
+            leftOsc.start();
+            rightOsc.start();
+
+            activeFrecId = frecId;
+
+            // Actualizar interfaz
+            document.getElementById('badge-' + frecId).innerText = "En reproducción";
+            document.getElementById('badge-' + frecId).classList.add('active');
+            const btn = document.getElementById('btn-' + frecId);
+            btn.innerText = "⏹️ Desactivar Onda " + nombre;
+            btn.classList.add('btn-stop');
         }
 
         function detenerSonido() {
-            if (activeOscillator) {
-                try {
-                    activeOscillator.stop();
-                    activeOscillator.disconnect();
-                } catch (e) {}
-                activeOscillator = null;
-            }
-            if (audioCtx) {
-                try {
-                    audioCtx.close();
-                } catch (e) {}
-                audioCtx = null;
-            }
+            if (leftOsc) { leftOsc.stop(); leftOsc = null; }
+            if (rightOsc) { rightOsc.stop(); rightOsc = null; }
+            if (audioCtx) { audioCtx.close(); audioCtx = null; }
 
-            document.querySelectorAll('.freq-status').forEach(s => {
-                s.innerText = "Inactivo";
-                s.classList.remove('playing');
-            });
+            if (activeFrecId) {
+                const badge = document.getElementById('badge-' + activeFrecId);
+                const btn = document.getElementById('btn-' + activeFrecId);
+                if (badge) {
+                    badge.innerText = "Inactivo";
+                    badge.classList.remove('active');
+                }
+                if (btn) {
+                    const nombre = activeFrecId.charAt(0).toUpperCase() + activeFrecId.slice(1);
+                    btn.innerText = "▶️ Activar Onda " + nombre;
+                    btn.classList.remove('btn-stop');
+                }
+                activeFrecId = null;
+            }
         }
 
-        // --- 7. PESTAÑA GRATITUD: LOCALSTORAGE ---
+        /* DIARIO DE GRATITUD */
         function guardarGratitud() {
-            const input = document.getElementById('gratitude-input');
-            const texto = input.value.trim();
+            const texto = document.getElementById('gratitude-input').value.trim();
+            if (!texto) return alert("Por favor escribe una reflexión antes de guardar.");
 
-            if (!texto) {
-                alert("Por favor escribe tu reflexión antes de guardar.");
-                return;
-            }
-
-            const ahora = new Date();
-            const fechaStr = ahora.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const horaStr = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-
-            const nuevaEntrada = {
-                fecha: `${fechaStr} - ${horaStr}`,
-                texto: texto
-            };
-
-            let historial = JSON.parse(localStorage.getItem('gym_gratitude_data')) || [];
-            historial.unshift(nuevaEntrada);
-            localStorage.setItem('gym_gratitude_data', JSON.stringify(historial));
-
-            input.value = '';
+            const fecha = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            let historial = JSON.parse(localStorage.getItem('gym_gratitud_historial')) || [];
+            
+            historial.unshift({ fecha: fecha, texto: texto });
+            localStorage.setItem('gym_gratitud_historial', JSON.stringify(historial));
+            
+            document.getElementById('gratitude-input').value = '';
             cargarHistorialGratitud();
+            alert("✨ Reflexión guardada con éxito.");
         }
 
         function cargarHistorialGratitud() {
-            const historial = JSON.parse(localStorage.getItem('gym_gratitude_data')) || [];
-            const container = document.getElementById('gratitude-history');
-
+            const historial = JSON.parse(localStorage.getItem('gym_gratitud_historial')) || [];
+            const contenedor = document.getElementById('gratitude-history');
+            
             if (historial.length === 0) {
-                container.innerHTML = '<p style="font-size:0.88rem; color:var(--text-muted);">No hay entradas guardadas aún.</p>';
+                contenedor.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes entradas guardadas.</p>';
                 return;
             }
 
-            container.innerHTML = historial.map(item => `
-                <div class="history-item">
-                    <div class="history-date">📅 ${item.fecha}</div>
-                    <div class="history-text">${escapeHTML(item.texto)}</div>
+            contenedor.innerHTML = historial.map(item => `
+                <div class="gratitude-item">
+                    <div class="gratitude-date">📅 ${item.fecha}</div>
+                    <div>${item.texto.replace(/\n/g, '<br>')}</div>
                 </div>
             `).join('');
         }
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
+        cargarHistorialGratitud();
     </script>
 </body>
 </html>
