@@ -1,768 +1,212 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gimnasio Mental - Foco & Autorregulación</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            200: '#99f6e4',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            800: '#115e59',
-                            900: '#134e4a',
-                        },
-                        calm: {
-                            bg: '#f8fafc',
-                            card: '#ffffff',
-                            accent: '#818cf8',
-                            sage: '#a7f3d0'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Gimnasio Mental</title>
     <style>
-        .breath-animation {
-            animation: breathe 16s infinite ease-in-out;
+        :root {
+            --primary: #115e59;
+            --primary-light: #ccfbf1;
+            --accent: #0f766e;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
         }
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            25% { transform: scale(1.35); opacity: 0.95; }
-            68.75% { transform: scale(1.35); opacity: 0.95; }
-        }
-        .tab-active {
-            color: #0d9488;
-            border-top: 3px solid #0d9488;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; }
+        header { background-color: var(--primary); color: white; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        .card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .card h2 { color: var(--primary); margin-bottom: 10px; font-size: 1.25rem; }
+        .card p { color: var(--text-light); margin-bottom: 15px; font-size: 0.95rem; line-height: 1.5; }
+        .btn { background-color: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; margin-top: 10px; display: inline-block; text-align: center; }
+        .btn:hover { background-color: var(--accent); }
+        .btn-secondary { background-color: #e2e8f0; color: var(--text); }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+        
+        /* Audio upload container */
+        .audio-box { background: var(--primary-light); padding: 12px; border-radius: 10px; margin-top: 15px; }
+        .audio-box label { font-size: 0.85rem; font-weight: bold; color: var(--primary); display: block; margin-bottom: 5px; }
+        audio { width: 100%; margin-top: 8px; }
+
+        /* Navigation Bar */
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #e2e8f0; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); z-index: 1000; }
+        .nav-item { text-align: center; color: var(--text-light); font-size: 0.75rem; cursor: pointer; text-decoration: none; flex: 1; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+        .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
+        
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Breathing circle */
+        .breath-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .circle { width: 150px; height: 150px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); font-size: 1.1rem; box-shadow: 0 0 20px rgba(17,94,89,0.2); transition: transform 4s ease-in-out; }
+        .animating { transform: scale(1.4); }
     </style>
 </head>
-<body class="h-full flex flex-col font-sans text-slate-800 bg-slate-50 antialiased selection:bg-teal-100">
+<body>
 
-    <!-- Header principal -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-30 px-4 py-3">
-        <div class="max-w-md mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-xl bg-teal-500 text-white flex items-center justify-center shadow-md shadow-teal-500/20">
-                    <i class="fa-solid fa-brain text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-slate-800 leading-none text-lg">Gimnasio Mental</h1>
-                    <p class="text-xs text-slate-500 font-medium">Begoña del Campo Method</p>
-                </div>
-            </div>
-            <!-- Botón Ambient Sound Quick Access -->
-            <button id="ambientSoundToggle" onclick="toggleAmbientMusic()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition text-xs font-semibold">
-                <i class="fa-solid fa-music text-xs" id="musicIcon"></i>
-                <span id="musicText">Música Calma</span>
-            </button>
-        </div>
-    </header>
+    <header id="app-header">Gimnasio Mental</header>
 
-    <!-- Contenido Principal Dinámico -->
-    <main class="flex-1 max-w-md w-full mx-auto p-4 pb-24 overflow-y-auto" id="appContent">
+    <div class="container">
         
-        <!-- SECCIÓN 1: HOY / INICIO -->
-        <section id="view-today" class="space-y-5">
-            <!-- Saludo & Racha -->
-            <div class="bg-gradient-to-br from-teal-600 to-teal-800 rounded-3xl p-6 text-white shadow-xl shadow-teal-900/10 relative overflow-hidden">
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-medium backdrop-blur-sm mb-2">Puesta a punto</span>
-                        <h2 class="text-2xl font-bold">¡Hola! ¿Listo para resetear?</h2>
-                    </div>
-                    <div class="text-right bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/10">
-                        <span class="text-xs text-teal-100 block">Racha</span>
-                        <span class="font-bold text-lg text-amber-300" id="streakCount">1 día 🔥</span>
-                    </div>
-                </div>
-                <p class="text-teal-100 text-sm leading-relaxed mb-4">
-                    "El foco no es forzar la mente a concentrarse, sino enseñarle al sistema nervioso que está seguro para estar presente."
-                </p>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="switchTab('exercises')" class="bg-white text-teal-900 hover:bg-teal-50 font-semibold py-3 px-3 rounded-2xl shadow-lg transition flex items-center justify-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-dice text-teal-600"></i> Ejercicio Random
-                    </button>
-                    <button onclick="switchTab('gratitude')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-3 rounded-2xl shadow-lg transition flex items-center justify-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-heart text-amber-200"></i> Diario Gratitud
-                    </button>
-                </div>
+        <!-- VISTA HOY -->
+        <div id="view-hoy" class="view active">
+            <div class="card">
+                <h2>⚡ Ejercicio Random del Día</h2>
+                <p id="random-text">Presiona el botón para recibir tu instrucción aleatoria de foco y presencia inspirada en Begoña del Campo.</p>
+                <button class="btn" onclick="generarEjercicioRandom()">Sortear Ejercicio</button>
             </div>
 
-            <!-- Selector de Ondas Binaurales Rápido -->
-            <div class="bg-slate-900 text-white rounded-3xl p-5 shadow-lg space-y-3">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center">
-                            <i class="fa-solid fa-wave-square"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-sm">Ondas Binaurales</h4>
-                            <p class="text-[11px] text-slate-400">Selecciona el estado deseado</p>
-                        </div>
-                    </div>
-                    <button onclick="toggleBinauralBeat()" id="binauralQuickBtn" class="px-3 py-1.5 rounded-xl bg-teal-500 text-white text-xs font-semibold hover:bg-teal-400 transition">
-                        Activar
-                    </button>
+            <div class="card">
+                <h2>🌬️ Respiración Consciente (Box Breathing)</h2>
+                <div class="breath-container">
+                    <div class="circle" id="breath-circle">Inhala</div>
+                    <button class="btn btn-secondary" style="margin-top:20px;" onclick="iniciarRespiracion()">Iniciar Ciclo (1 Min)</button>
                 </div>
-
-                <div class="grid grid-cols-3 gap-1.5 pt-1">
-                    <button onclick="setWaveType('theta')" id="wave-theta" class="wave-btn py-1.5 px-2 rounded-xl text-[11px] font-medium bg-teal-600 text-white text-center">
-                        Theta (4-8Hz)<br><span class="text-[9px] opacity-80">Visualizar</span>
-                    </button>
-                    <button onclick="setWaveType('delta')" id="wave-delta" class="wave-btn py-1.5 px-2 rounded-xl text-[11px] font-medium bg-slate-800 text-slate-300 text-center">
-                        Delta (1-4Hz)<br><span class="text-[9px] opacity-80">Dormir</span>
-                    </button>
-                    <button onclick="setWaveType('alpha')" id="wave-alpha" class="wave-btn py-1.5 px-2 rounded-xl text-[11px] font-medium bg-slate-800 text-slate-300 text-center">
-                        Alpha (8-12Hz)<br><span class="text-[9px] opacity-80">Viaje/Trabajo</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Rutina Rápida de Hoy -->
-            <div>
-                <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-amber-500"></i> Resets del Día
-                </h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <div onclick="openExerciseById('breath')" class="cursor-pointer bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition group">
-                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-wind"></i>
-                        </div>
-                        <h4 class="font-semibold text-slate-800 text-sm">Respiración 4-7-8</h4>
-                        <p class="text-xs text-slate-500 mt-1">Calmar sistema nervioso</p>
-                    </div>
-                    <div onclick="openExerciseById('somatic')" class="cursor-pointer bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition group">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-hand-holding-heart"></i>
-                        </div>
-                        <h4 class="font-semibold text-slate-800 text-sm">Somatic Tracking</h4>
-                        <p class="text-xs text-slate-500 mt-1">Soltar tensión física</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN: GRATITUD -->
-        <section id="view-gratitude" class="space-y-5 hidden">
-            <div class="text-center">
-                <h2 class="text-xl font-bold text-slate-800">Diario de Gratitud</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Entrena la mirada hacia lo que sí está bien</p>
-            </div>
-
-            <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
-                        <i class="fa-solid fa-heart text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-sm">3 Destellos del Día</h3>
-                        <p class="text-xs text-slate-500">Siente la emoción en el cuerpo al escribir</p>
-                    </div>
-                </div>
-
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">1. Algo simple que disfruté hoy:</label>
-                        <input type="text" id="gratitude1" placeholder="Ej: El sabor del café por la mañana..." class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">2. Una persona o gesto que aprecio:</label>
-                        <input type="text" id="gratitude2" placeholder="Ej: La sonrisa de un compañero..." class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">3. Un logro pequeño de mi parte:</label>
-                        <input type="text" id="gratitude3" placeholder="Ej: Haberme tomado 3 min para pausar..." class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
-                    </div>
-                </div>
-
-                <button onclick="saveGratitude()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-check"></i> Guardar Registro de Gratitud
-                </button>
-            </div>
-
-            <div id="gratitudeHistory" class="space-y-2">
-                <h4 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Tus destellos pasados</h4>
-                <div id="gratitudeList" class="space-y-2">
-                    <p class="text-xs text-slate-400 italic">Aún no has guardado registros hoy.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN: EJERCICIOS RANDOM & TEMPORIZADOR -->
-        <section id="view-exercises" class="space-y-5 hidden">
-            <div class="text-center">
-                <h2 class="text-xl font-bold text-slate-800">Gimnasio de Foco</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Entrena la atención y resetea tu mente</p>
-            </div>
-
-            <button onclick="generateRandomExercise()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3.5 px-4 rounded-2xl shadow-lg shadow-teal-600/20 transition flex items-center justify-center gap-2 group">
-                <i class="fa-solid fa-shuffle group-hover:rotate-180 transition duration-500"></i>
-                Generar Ejercicio Aleatorio
-            </button>
-
-            <div id="exerciseCard" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
-                <div class="flex justify-between items-center">
-                    <span id="exerciseCategory" class="px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-semibold">Respiración</span>
-                    <span id="exerciseDuration" class="text-xs text-slate-400 font-medium"><i class="fa-regular fa-clock mr-1"></i>3 min</span>
-                </div>
-                <div>
-                    <h3 id="exerciseTitle" class="text-lg font-bold text-slate-800">Respiración 4-7-8</h3>
-                    <p id="exerciseDesc" class="text-xs text-slate-600 mt-2 leading-relaxed">
-                        Inhala en 4 segundos, mantén el aire durante 7 segundos y exhala suavemente por la boca en 8 segundos. Repite 4 ciclos para desactivar el estado de alarma.
-                    </p>
-                </div>
-
-                <div class="flex flex-col items-center justify-center py-6 bg-slate-50 rounded-2xl relative overflow-hidden">
-                    <div id="breathCircle" class="w-32 h-32 rounded-full bg-teal-200/50 border-2 border-teal-500 flex items-center justify-center transition-all duration-1000 relative">
-                        <div class="w-24 h-24 rounded-full bg-teal-500/20 flex items-center justify-center">
-                            <span id="timerDisplay" class="text-2xl font-extrabold text-teal-800">03:00</span>
-                        </div>
-                    </div>
-                    <p id="breathInstruction" class="text-xs font-semibold text-teal-700 mt-4 h-4">Presiona Iniciar para comenzar</p>
-                </div>
-
-                <div class="flex gap-2 pt-1">
-                    <button id="timerStartBtn" onclick="toggleTimer()" class="flex-1 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play"></i> Iniciar
-                    </button>
-                    <button onclick="resetTimer()" class="px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-2.5 rounded-xl transition text-sm">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN: AUDIOS GUIADOS Y MUSICA -->
-        <section id="view-audios" class="space-y-5 hidden">
-            <div class="text-center">
-                <h2 class="text-xl font-bold text-slate-800">Audios & Visualizaciones</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Guiones para grabar tus deseos estilo Begoña del Campo</p>
-            </div>
-
-            <div class="space-y-3">
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Onda Theta</span>
-                            <h3 class="font-bold text-slate-800 text-sm mt-1">Guión 1: Reset de 3 Minutos</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Pausa consciente en el medio del día</p>
-                        </div>
-                        <button onclick="toggleScriptModal(1)" class="text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg">
-                            Ver Guión
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Onda Alpha</span>
-                            <h3 class="font-bold text-slate-800 text-sm mt-1">Guión 2: Entrada a Deep Work</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Foco y presencia previa al trabajo</p>
-                        </div>
-                        <button onclick="toggleScriptModal(2)" class="text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg">
-                            Ver Guión
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Onda Theta / Delta</span>
-                            <h3 class="font-bold text-slate-800 text-sm mt-1">Guión 3: Visualización Nocturna de Deseos</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Ideal para escuchar en la cama antes de dormir</p>
-                        </div>
-                        <button onclick="toggleScriptModal(3)" class="text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg">
-                            Ver Guión
-                        </button>
-                    </div>
-                    <div class="pt-2 border-t border-slate-50 flex items-center justify-between gap-2">
-                        <label class="cursor-pointer text-xs font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-1.5 bg-purple-50 px-3 py-1.5 rounded-xl border border-purple-100">
-                            <i class="fa-solid fa-upload"></i> Subir tu grabación
-                            <input type="file" accept="audio/*" class="hidden" onchange="handleAudioUpload(event, 'audio3')">
-                        </label>
-                        <audio id="audio3" controls class="w-1/2 h-8 hidden"></audio>
-                        <span id="audio3Name" class="text-[11px] text-slate-400 italic truncate max-w-[150px]">Sin archivo subido</span>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Onda Alpha</span>
-                            <h3 class="font-bold text-slate-800 text-sm mt-1">Guión 4: Manifestación en Movimiento</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Para el colectivo, auto o pausas de trabajo</p>
-                        </div>
-                        <button onclick="toggleScriptModal(4)" class="text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg">
-                            Ver Guión
-                        </button>
-                    </div>
-                    <div class="pt-2 border-t border-slate-50 flex items-center justify-between gap-2">
-                        <label class="cursor-pointer text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-100">
-                            <i class="fa-solid fa-upload"></i> Subir tu grabación
-                            <input type="file" accept="audio/*" class="hidden" onchange="handleAudioUpload(event, 'audio4')">
-                        </label>
-                        <audio id="audio4" controls class="w-1/2 h-8 hidden"></audio>
-                        <span id="audio4Name" class="text-[11px] text-slate-400 italic truncate max-w-[150px]">Sin archivo subido</span>
-                    </div>
-                </div>
-
-                <!-- Guión 5: Reprogramación Nocturna & Recordar Sueños -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Onda Delta / Theta</span>
-                            <h3 class="font-bold text-slate-800 text-sm mt-1">Guión 5: Dormir & Recordar Sueños</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Reprogramación subconsciente para el descanso y memoria de sueños</p>
-                        </div>
-                        <button onclick="toggleScriptModal(5)" class="text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg">
-                            Ver Guión
-                        </button>
-                    </div>
-                    <div class="pt-2 border-t border-slate-50 flex items-center justify-between gap-2">
-                        <label class="cursor-pointer text-xs font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100">
-                            <i class="fa-solid fa-upload"></i> Subir tu grabación
-                            <input type="file" accept="audio/*" class="hidden" onchange="handleAudioUpload(event, 'audio5')">
-                        </label>
-                        <audio id="audio5" controls class="w-1/2 h-8 hidden"></audio>
-                        <span id="audio5Name" class="text-[11px] text-slate-400 italic truncate max-w-[150px]">Sin archivo subido</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal de Guión de Audio -->
-    <div id="scriptModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
-        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 max-h-[80vh] overflow-y-auto space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 id="modalScriptTitle" class="font-bold text-slate-800 text-base">Guión de Grabación</h3>
-                <button onclick="toggleScriptModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold">✕</button>
-            </div>
-            <div id="modalScriptBody" class="text-xs text-slate-600 space-y-3 leading-relaxed">
-            </div>
-            <div class="pt-2">
-                <p class="text-[11px] text-amber-600 bg-amber-50 p-2.5 rounded-xl border border-amber-100">
-                    💡 <strong>Tip de Grabación:</strong> Lee pausadamente, haciendo silencios breves de 2 segundos entre frase y frase.
-                </p>
             </div>
         </div>
+
+        <!-- VISTA SESIONES & GUIONES CON SUBIDA DE AUDIO -->
+        <div id="view-sesiones" class="view">
+            <div class="card">
+                <h2>🎧 Guión 1: Reset Mental Express</h2>
+                <p><strong>Objetivo:</strong> Salir del modo multitarea.<br><em>"Inhala profundo... suelta los hombros... vuelve al aquí y ahora..."</em></p>
+                <div class="audio-box">
+                    <label>Sube tu audio grabado:</label>
+                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-1')">
+                    <audio id="player-1" controls style="display:none;"></audio>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🌙 Guión 5: Dormir & Recordar Sueños</h2>
+                <p><strong>Objetivo:</strong> Reprogramación nocturna con ondas Delta/Theta.<br><em>"Mi descanso es profundo... Al despertar recordaré mis sueños con claridad..."</em></p>
+                <div class="audio-box">
+                    <label>Sube tu audio grabado:</label>
+                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-5')">
+                    <audio id="player-5" controls style="display:none;"></audio>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🚆 Guión 4: Manifestación en Movimiento</h2>
+                <p><strong>Objetivo:</strong> Para viajar al banco o trabajar con enfoque Alpha.<br><em>"Mis trámites fluyen con calma y seguridad..."</em></p>
+                <div class="audio-box">
+                    <label>Sube tu audio grabado:</label>
+                    <input type="file" accept="audio/*" onchange="cargarAudio(event, 'player-4')">
+                    <audio id="player-4" controls style="display:none;"></audio>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA PROGRESO / FRECUENCIAS -->
+        <div id="view-progreso" class="view">
+            <div class="card">
+                <h2>🧠 Frecuencias Binaurales (Web Audio)</h2>
+                <p>Selecciona la onda adecuada para tu sesión:</p>
+                <button class="btn" onclick="tocarFrecuencia(432, 'Theta')">Activar Onda Theta (Visualización)</button>
+                <button class="btn btn-secondary" style="margin-top:10px;" onclick="tocarFrecuencia(285, 'Delta')">Activar Onda Delta (Dormir)</button>
+                <button class="btn btn-secondary" style="margin-top:10px;" onclick="detenerFrecuencia()">Detener Sonido</button>
+            </div>
+        </div>
+
+        <!-- VISTA GRATITUD -->
+        <div id="view-afirmaciones" class="view">
+            <div class="card">
+                <h2>✨ Diario de Gratitud</h2>
+                <p>1. ¿Qué pequeño detalle salió bien hoy?<br>2. ¿Qué aspecto de tu cuerpo o mente agradeces?<br>3. ¿Qué aprendizaje te llevas?</p>
+                <textarea class="btn btn-secondary" style="width:100%; height:80px; text-align:left; padding:10px; resize:none;" placeholder="Escribe tus respuestas aquí..."></textarea>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Menú de Navegación Inferior -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-40 py-2 px-4">
-        <div class="max-w-md mx-auto flex justify-around items-center">
-            <button onclick="switchTab('today')" id="tab-today" class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] py-1 transition tab-active">
-                <i class="fa-solid fa-house text-base"></i>
-                <span>Hoy</span>
-            </button>
-            <button onclick="switchTab('exercises')" id="tab-exercises" class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] py-1 transition">
-                <i class="fa-solid fa-dumbbell text-base"></i>
-                <span>Ejercicios</span>
-            </button>
-            <button onclick="switchTab('gratitude')" id="tab-gratitude" class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] py-1 transition">
-                <i class="fa-solid fa-heart text-base"></i>
-                <span>Gratitud</span>
-            </button>
-            <button onclick="switchTab('audios')" id="tab-audios" class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] py-1 transition">
-                <i class="fa-solid fa-headphones text-base"></i>
-                <span>Audios</span>
-            </button>
-            <button onclick="switchTab('affirmations')" id="tab-affirmations" class="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] py-1 transition">
-                <i class="fa-solid fa-sparkles text-base"></i>
-                <span>Afirmaciones</span>
-            </button>
-        </div>
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav>
+        <a class="nav-item active" onclick="cambiarVista('hoy', this)">
+            <span class="nav-icon">☀️</span>Hoy
+        </a>
+        <a class="nav-item" onclick="cambiarVista('sesiones', this)">
+            <span class="nav-icon">🎧</span>Sesiones & Audios
+        </a>
+        <a class="nav-item" onclick="cambiarVista('progreso', this)">
+            <span class="nav-icon">🧠</span>Frecuencias
+        </a>
+        <a class="nav-item" onclick="cambiarVista('afirmaciones', this)">
+            <span class="nav-icon">✨</span>Gratitud
+        </a>
     </nav>
 
-    <!-- Script de Lógica Javascript Completa -->
     <script>
-        const exercises = [
-            {
-                id: 'breath',
-                category: 'Respiración',
-                duration: '3 min',
-                seconds: 180,
-                title: 'Respiración 4-7-8',
-                desc: 'Inhala en 4s, sostén el aire en 7s y exhala en 8s. Excelente para desactivar el estado de alerta del sistema nervioso simpático.'
-            },
-            {
-                id: 'somatic',
-                category: 'Somatic Tracking',
-                duration: '2 min',
-                seconds: 120,
-                title: 'Rastreo Somático de Tensión',
-                desc: 'Cierra los ojos. Escanea tu cuerpo de pies a cabeza. Ubica la mayor tensión sin juzgarla. Respira hacia ese punto enviando señal de seguridad.'
-            },
-            {
-                id: 'grounding',
-                category: 'Anclaje 5-4-3-2-1',
-                duration: '3 min',
-                seconds: 180,
-                title: 'Anclaje Sensorial 5-4-3-2-1',
-                desc: 'Nombra en voz alta: 5 cosas que ves, 4 que puedes tocar, 3 que escuchas, 2 que hueles y 1 emoción que sientas. Vuelve al presente.'
-            },
-            {
-                id: 'micro-mission',
-                category: 'Foco Profundo',
-                duration: '5 min',
-                seconds: 300,
-                title: 'Micro-Misión de 5 Minutos',
-                desc: 'Elige UNA sola tarea mínima. Pon el temporizador e inicia sin pensar en el resultado final. Solo avanza durante 5 minutos continuos.'
-            }
-        ];
-
-        const affirmations = [
-            "Mi atención es un músculo. Cada vez que noto una distracción y vuelvo con calma, estoy reconfigurando mi cerebro.",
-            "No necesito eliminar el estrés, necesito enseñarle a mi cuerpo que estoy a salvo en este instante.",
-            "El foco no es un estado forzado; es la consecuencia natural de un sistema nervioso en calma.",
-            "Detenerse 3 minutos no es perder tiempo, es afilar el hacha antes de seguir cortando.",
-            "Una sola tarea a la vez es el acto supremo de respeto hacia mi capacidad intelectual."
-        ];
-
-        const scripts = {
-            1: {
-                title: "Guión 1: Reset de 3 Minutos (Theta)",
-                body: `
-                    <p class="font-bold text-slate-800">1. Introducción (0:00 - 0:30):</p>
-                    <p>"Detente por un segundo. Deja lo que estés haciendo y apoya ambos pies firmemente en el suelo. Cierra los ojos si te resulta cómodo..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">2. Anclaje al cuerpo (0:30 - 1:30):</p>
-                    <p>"Siente el peso de tu cuerpo sobre la silla. Observa tu respiración tal como está en este momento, sin intentar cambiarla. Inhala profundo por la nariz... y suelta el aire por la boca..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">3. Reenfocar (1:30 - 3:00):</p>
-                    <p>"Cualquier pensamiento pendiente, déjalo en pausa por 2 minutos. Tu sistema nervioso está a salvo. Siente tus hombros bajar. Al abrir los ojos, elige una sola acción para realizar a continuación."</p>
-                `
-            },
-            2: {
-                title: "Guión 2: Entrada a Deep Work (Alpha)",
-                body: `
-                    <p class="font-bold text-slate-800">1. Preparación de Entorno (0:00 - 0:45):</p>
-                    <p>"Vas a entrar en un espacio de atención enfocada. Apaga notificaciones. Limpia tu mesa visualmente. Respira hondo..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">2. Declaración de Intención (0:45 - 2:00):</p>
-                    <p>"Define con claridad: ¿Qué única cosa vas a resolver en este bloque? No necesitas resolverlo todo, solo dar el siguiente paso claro con total presencia."</p>
-                `
-            },
-            3: {
-                title: "Guión 3: Visualización Nocturna de Deseos (Theta/Delta)",
-                body: `
-                    <p class="font-bold text-slate-800">1. Relajación Física Profunda (0:00 - 1:00):</p>
-                    <p>"Acuéstate cómodamente. Deja que tus párpados pesen. Inhala profundo y al exhalar, siente cómo tu cuerpo se hunde suavemente en el colchón..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">2. Activación de la Imagen del Deseo (1:00 - 3:00):</p>
-                    <p>"Trae a tu mente ese deseo cumplido. No lo veas desde afuera, VÍVELO desde tus propios ojos. ¿Qué ves? ¿Qué sonidos hay a tu alrededor? Siente en tu pecho esa certeza y gratitud, como si estuviera sucediendo AHORA..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">3. Anclaje Somático y Soltar (3:00 - 4:00):</p>
-                    <p>"Sonríe suavemente. Tu cerebro no distingue realidad de imaginación; ya le estás enseñando a tu sistema nervioso el camino. Confía, suelta y descansa."</p>
-                `
-            },
-            4: {
-                title: "Guión 4: Manifestación en Movimiento (Alpha)",
-                body: `
-                    <p class="font-bold text-slate-800">1. Presencia Abierta (0:00 - 0:45):</p>
-                    <p>"Mientras te desplazas o haces una pausa, mantén la espalda erguida pero suave. Mantén la mirada relajada..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">2. Sensación de Claridad y Logro (0:45 - 2:00):</p>
-                    <p>"Conecta con tu visión de vida. Siente la energía y la seguridad de quien ya habita ese estado. Camina o trabaja desde esa presencia poderosa y tranquila."</p>
-                `
-            },
-            5: {
-                title: "Guión 5: Dormir Profundo & Recordar Sueños (Delta / Theta)",
-                body: `
-                    <p class="font-bold text-slate-800">1. Soltar el Día (0:00 - 1:30):</p>
-                    <p>"Acomódate en la cama... Suelta el peso de tu cuerpo sobre el colchón. Inhala profundo por la nariz y exhala por la boca liberando todo el cansancio del día. Lo que ocurrió hoy ya terminó. Este momento es solo tuyo..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">2. Reprogramación del Subconsciente (1:30 - 3:30):</p>
-                    <p>"A medida que tu cuerpo se relaja, tu mente se vuelve serena y receptiva. Repite mentalmente: 'Mi mente es sabia, mi descanso es profundo. Durante la noche mi cerebro se renueva y procesa la información en calma'..."</p>
-                    <br>
-                    <p class="font-bold text-slate-800">3. Anclaje de Memoria de Sueños (3:30 - 5:00):</p>
-                    <p>"Le das una instrucción clara a tu memoria: 'Al despertar mañana por la mañana, recordaré mis sueños con claridad y facilidad. El recuerdo estará presente y nítido'. Confía en tu capacidad y déjate llevar al sueño profundo..."</p>
-                `
-            }
-        };
-
-        // Estado global de la aplicación
-        let currentExerciseIndex = 0;
-        let timerInterval = null;
-        let timerSeconds = 180;
-        let isTimerRunning = false;
-        let totalCompletedCount = 0;
-        let totalMinutesTrained = 0;
-        let currentAffirmationIndex = 0;
-
-        // Audio Context (Sintetizador y Ondas Binaurales)
-        let audioCtx = null;
-        let leftOsc = null;
-        let rightOsc = null;
-        let gainNode = null;
-        let isSynthPlaying = false;
-        let waveType = 'theta';
-
-        const waveConfigs = {
-            delta: { baseFreq: 100, beatFreq: 2.5 },
-            theta: { baseFreq: 150, beatFreq: 6.0 },
-            alpha: { baseFreq: 200, beatFreq: 10.0 }
-        };
-
-        function switchTab(tabName) {
-            const tabs = ['today', 'exercises', 'gratitude', 'audios', 'affirmations'];
-            tabs.forEach(t => {
-                const viewElem = document.getElementById(`view-${t}`);
-                const tabElem = document.getElementById(`tab-${t}`);
-                if (viewElem) viewElem.classList.add('hidden');
-                if (tabElem) tabElem.classList.remove('tab-active');
-            });
-
-            const activeView = document.getElementById(`view-${tabName}`);
-            const activeTab = document.getElementById(`tab-${tabName}`);
-            if (activeView) activeView.classList.remove('hidden');
-            if (activeTab) activeTab.classList.add('tab-active');
+        function cambiarVista(vistaId, elemento) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('view-' + vistaId).classList.add('active');
+            elemento.classList.add('active');
         }
 
-        function openExerciseById(id) {
-            const idx = exercises.findIndex(e => e.id === id);
-            if (idx !== -1) {
-                currentExerciseIndex = idx;
-                updateExerciseCard();
-                switchTab('exercises');
-            }
+        function generarEjercicioRandom() {
+            const ejercicios = [
+                "Enfócate 2 minutos en el punto exacto donde entra el aire por tu nariz.",
+                "Haz un escaneo rápido del cuerpo: afloja mandíbula, hombros y manos ahora mismo.",
+                "Mira a tu alrededor y nombra mentalmente 3 cosas de color verde o azul.",
+                "Postura de poder: estira la espalda, eleva el mentón y respira profundo 3 veces."
+            ];
+            const random = ejercicios[Math.floor(Math.random() * ejercicios.length)];
+            document.getElementById('random-text').innerText = random;
         }
 
-        function generateRandomExercise() {
-            let nextIndex;
-            do {
-                nextIndex = Math.floor(Math.random() * exercises.length);
-            } while (nextIndex === currentExerciseIndex && exercises.length > 1);
-            
-            currentExerciseIndex = nextIndex;
-            updateExerciseCard();
+        function iniciarRespiracion() {
+            const circle = document.getElementById('breath-circle');
+            circle.innerText = "Inhala...";
+            circle.classList.add('animating');
+            setTimeout(() => {
+                circle.innerText = "Sostén";
+            }, 4000);
+            setTimeout(() => {
+                circle.innerText = "Exhala...";
+                circle.classList.remove('animating');
+            }, 7000);
+            setTimeout(() => {
+                circle.innerText = "Listo";
+            }, 11000);
         }
 
-        function updateExerciseCard() {
-            const ex = exercises[currentExerciseIndex];
-            document.getElementById('exerciseCategory').innerText = ex.category;
-            document.getElementById('exerciseDuration').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>${ex.duration}`;
-            document.getElementById('exerciseTitle').innerText = ex.title;
-            document.getElementById('exerciseDesc').innerText = ex.desc;
-            
-            resetTimer();
-            timerSeconds = ex.seconds;
-            updateTimerDisplay();
-        }
-
-        function toggleTimer() {
-            if (isTimerRunning) {
-                pauseTimer();
-            } else {
-                startTimer();
-            }
-        }
-
-        function startTimer() {
-            isTimerRunning = true;
-            document.getElementById('timerStartBtn').innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
-            document.getElementById('breathCircle').classList.add('breath-animation');
-            document.getElementById('breathInstruction').innerText = 'Respira a tu ritmo suavemente...';
-
-            timerInterval = setInterval(() => {
-                if (timerSeconds > 0) {
-                    timerSeconds--;
-                    updateTimerDisplay();
-                } else {
-                    completeTimer();
-                }
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            isTimerRunning = false;
-            clearInterval(timerInterval);
-            document.getElementById('timerStartBtn').innerHTML = '<i class="fa-solid fa-play"></i> Continuar';
-            document.getElementById('breathCircle').classList.remove('breath-animation');
-            document.getElementById('breathInstruction').innerText = 'Pausado';
-        }
-
-        function resetTimer() {
-            pauseTimer();
-            const ex = exercises[currentExerciseIndex];
-            timerSeconds = ex.seconds;
-            updateTimerDisplay();
-            document.getElementById('timerStartBtn').innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
-            document.getElementById('breathInstruction').innerText = 'Presiona Iniciar para comenzar';
-        }
-
-        function completeTimer() {
-            pauseTimer();
-            totalCompletedCount++;
-            const minutes = Math.ceil(exercises[currentExerciseIndex].seconds / 60);
-            totalMinutesTrained += minutes;
-
-            document.getElementById('totalCompleted').innerText = totalCompletedCount;
-            document.getElementById('minutesTrained').innerText = `${totalMinutesTrained} min`;
-
-            document.getElementById('breathInstruction').innerText = '¡Ejercicio Completado! ✨';
-        }
-
-        function updateTimerDisplay() {
-            const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
-            const s = (timerSeconds % 60).toString().padStart(2, '0');
-            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
-        }
-
-        function setWaveType(type) {
-            waveType = type;
-            document.querySelectorAll('.wave-btn').forEach(b => {
-                b.classList.remove('bg-teal-600', 'text-white');
-                b.classList.add('bg-slate-800', 'text-slate-300');
-            });
-            const activeBtn = document.getElementById(`wave-${type}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
-                activeBtn.classList.add('bg-teal-600', 'text-white');
-            }
-
-            if (isSynthPlaying) {
-                toggleBinauralBeat();
-                toggleBinauralBeat();
-            }
-        }
-
-        function toggleBinauralBeat() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            if (isSynthPlaying) {
-                if (leftOsc) leftOsc.stop();
-                if (rightOsc) rightOsc.stop();
-                isSynthPlaying = false;
-                document.getElementById('binauralQuickBtn').innerText = 'Activar';
-            } else {
-                const config = waveConfigs[waveType] || waveConfigs.theta;
-                
-                leftOsc = audioCtx.createOscillator();
-                rightOsc = audioCtx.createOscillator();
-                gainNode = audioCtx.createGain();
-
-                leftOsc.frequency.value = config.baseFreq;
-                rightOsc.frequency.value = config.baseFreq + config.beatFreq;
-
-                const merger = audioCtx.createChannelMerger(2);
-                leftOsc.connect(merger, 0, 0);
-                rightOsc.connect(merger, 0, 1);
-
-                gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
-
-                merger.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                leftOsc.start();
-                rightOsc.start();
-                isSynthPlaying = true;
-                document.getElementById('binauralQuickBtn').innerText = 'Desactivar';
-            }
-        }
-
-        function toggleAmbientMusic() {
-            toggleBinauralBeat();
-            const btn = document.getElementById('ambientSoundToggle');
-            if (isSynthPlaying) {
-                btn.classList.add('bg-teal-100', 'text-teal-800');
-            } else {
-                btn.classList.remove('bg-teal-100', 'text-teal-800');
-            }
-        }
-
-        function toggleScriptModal(scriptId) {
-            const modal = document.getElementById('scriptModal');
-            if (scriptId && scripts[scriptId]) {
-                document.getElementById('modalScriptTitle').innerText = scripts[scriptId].title;
-                document.getElementById('modalScriptBody').innerHTML = scripts[scriptId].body;
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function handleAudioUpload(event, audioId) {
+        // Subir y reproducir audio localmente en cada tarjeta
+        function cargarAudio(event, playerId) {
             const file = event.target.files[0];
             if (file) {
-                const audioElem = document.getElementById(audioId);
-                const nameElem = document.getElementById(`${audioId}Name`);
-                audioElem.src = URL.createObjectURL(file);
-                audioElem.classList.remove('hidden');
-                nameElem.innerText = file.name;
+                const audioURL = URL.createObjectURL(file);
+                const player = document.getElementById(playerId);
+                player.src = audioURL;
+                player.style.display = 'block';
             }
         }
 
-        function saveGratitude() {
-            const g1 = document.getElementById('gratitude1').value.trim();
-            const g2 = document.getElementById('gratitude2').value.trim();
-            const g3 = document.getElementById('gratitude3').value.trim();
-
-            if (!g1 && !g2 && !g3) {
-                alert('Escribe al menos una razón de gratitud para guardar.');
-                return;
-            }
-
-            const list = document.getElementById('gratitudeList');
-            const item = document.createElement('div');
-            item.className = "bg-white p-3 rounded-xl border border-slate-100 shadow-sm text-xs space-y-1";
-            item.innerHTML = `
-                <span class="text-[10px] text-teal-600 font-bold block">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                ${g1 ? `<p class="text-slate-700">• ${g1}</p>` : ''}
-                ${g2 ? `<p class="text-slate-700">• ${g2}</p>` : ''}
-                ${g3 ? `<p class="text-slate-700">• ${g3}</p>` : ''}
-            `;
-            
-            if (list.querySelector('p.italic')) {
-                list.innerHTML = '';
-            }
-            list.prepend(item);
-
-            document.getElementById('gratitude1').value = '';
-            document.getElementById('gratitude2').value = '';
-            document.getElementById('gratitude3').value = '';
-            alert('✨ Registro guardado. Reconfigurando tu foco hacia el bienestar.');
+        // Sintetizador de Frecuencias Binaurales simples
+        let audioCtx = null;
+        function tocarFrecuencia(freq, tipo) {
+            detenerFrecuencia();
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); // Volumen suave
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            alert("Reproduciendo frecuencia " + tipo + " (" + freq + " Hz). Usa auriculares para mejor efecto.");
         }
 
-        function nextAffirmation() {
-            currentAffirmationIndex = (currentAffirmationIndex + 1) % affirmations.length;
-            document.getElementById('affirmationText').innerText = `"${affirmations[currentAffirmationIndex]}"`;
+        function detenerFrecuencia() {
+            if (audioCtx) {
+                audioCtx.close();
+                audioCtx = null;
+            }
         }
     </script>
 </body>
