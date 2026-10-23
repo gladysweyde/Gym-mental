@@ -237,7 +237,16 @@
             transform: scale(1.35);
         }
 
-        /* Historiales (Gratitud & Expansión) */
+        /* Historiales Desplegables */
+        .collapsible-container {
+            display: none;
+            margin-top: 14px;
+        }
+
+        .collapsible-container.show {
+            display: block;
+        }
+
         .history-item {
             background: #f8fafc;
             border-left: 4px solid var(--primary);
@@ -245,6 +254,7 @@
             margin-top: 10px;
             border-radius: 6px;
             font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .history-date {
@@ -321,7 +331,7 @@
             </div>
         </div>
 
-        <!-- VISTA EXPANSIÓN DE IDENTIDAD (NUEVA) -->
+        <!-- VISTA EXPANSIÓN CON HISTORIAL DESPLEGABLE -->
         <div id="view-expansion" class="view">
             <div class="card">
                 <h2>🏗️ Agrandar mi Zona de Confort</h2>
@@ -346,8 +356,12 @@
 
             <div class="card">
                 <h2>📜 Mi Nueva Casa (Historial)</h2>
-                <div id="expansion-history">
-                    <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes espacios registrados.</p>
+                <p>Consulta tus cimientos y registros anteriores cuando desees reconfigurar tu certeza.</p>
+                <button id="btn-toggle-expansion" class="btn btn-secondary" onclick="toggleHistorial('expansion')">👁️ Mostrar Historial</button>
+                <div id="expansion-history-container" class="collapsible-container">
+                    <div id="expansion-history">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes espacios registrados.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -478,7 +492,7 @@
             </div>
         </div>
 
-        <!-- VISTA GRATITUD -->
+        <!-- VISTA GRATITUD CON HISTORIAL DESPLEGABLE -->
         <div id="view-gratitud" class="view">
             <div class="card">
                 <h2>✨ Anclaje de Gratitud Diario</h2>
@@ -489,15 +503,19 @@
 
             <div class="card">
                 <h2>📜 Historial de Reflexiones</h2>
-                <div id="gratitude-history">
-                    <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes entradas guardadas.</p>
+                <p>Revive tus momentos de agradecimiento pasados.</p>
+                <button id="btn-toggle-gratitud" class="btn btn-secondary" onclick="toggleHistorial('gratitud')">👁️ Mostrar Historial</button>
+                <div id="gratitud-history-container" class="collapsible-container">
+                    <div id="gratitude-history">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes entradas guardadas.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS) -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <nav>
         <a class="nav-item active" onclick="cambiarVista('hoy', this)">
             <span class="nav-icon">☀️</span>Hoy
@@ -565,6 +583,20 @@
             }, 7000);
             setTimeout(() => { circle.innerText = "Sostén"; }, 11000);
             setTimeout(() => { circle.innerText = "Listo"; }, 15000);
+        }
+
+        /* FUNCIÓN DESPLEGABLE DE HISTORIALES */
+        function toggleHistorial(seccion) {
+            const container = document.getElementById(seccion + '-history-container');
+            const btn = document.getElementById('btn-toggle-' + seccion);
+            
+            if (container.classList.contains('show')) {
+                container.classList.remove('show');
+                btn.innerText = '👁️ Mostrar Historial';
+            } else {
+                container.classList.add('show');
+                btn.innerText = '🙈 Ocultar Historial';
+            }
         }
 
         /* PERSISTENCIA DE AUDIOS MEDIANTE INDEXEDDB */
