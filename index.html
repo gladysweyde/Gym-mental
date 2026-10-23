@@ -237,8 +237,8 @@
             transform: scale(1.35);
         }
 
-        /* Gratitud */
-        .gratitude-item {
+        /* Historiales (Gratitud & Expansión) */
+        .history-item {
             background: #f8fafc;
             border-left: 4px solid var(--primary);
             padding: 12px;
@@ -247,7 +247,7 @@
             font-size: 0.9rem;
         }
 
-        .gratitude-date {
+        .history-date {
             font-size: 0.75rem;
             color: var(--text-muted);
             font-weight: bold;
@@ -272,7 +272,7 @@
         .nav-item {
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             text-decoration: none;
             flex: 1;
@@ -285,7 +285,7 @@
         }
 
         .nav-icon {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             display: block;
             margin-bottom: 2px;
         }
@@ -321,7 +321,38 @@
             </div>
         </div>
 
-        <!-- VISTA SESIONES CON BOTÓN BASURA Y TEXTO CAMBIADO A SESIÓN -->
+        <!-- VISTA EXPANSIÓN DE IDENTIDAD (NUEVA) -->
+        <div id="view-expansion" class="view">
+            <div class="card">
+                <h2>🏗️ Agrandar mi Zona de Confort</h2>
+                <p id="expansion-text">Presiona el botón para obtener tu micro-ladrillo de hoy: una acción o reencuadre pequeño para familiarizarte con tu proyecto en Europa.</p>
+                <button class="btn" onclick="generarMicroLadrillo()">🧱 Obtener Micro-Ladrillo del Día</button>
+            </div>
+
+            <div class="card">
+                <h2>🛋️ Abrazo Somático al Miedo</h2>
+                <p>Si sientes opresión al pensar en emprender, recuerda: tu cerebro solo intenta protegerte de lo nuevo. Ponte la mano en el pecho y repite:</p>
+                <blockquote style="background: var(--primary-light); padding: 12px; border-radius: 10px; font-style: italic; color: var(--primary-dark); font-size: 0.9rem; margin-bottom: 12px;">
+                    "Este miedo es solo mi mente explorando una habitación nueva de mi casa. Estoy a salvo. Avanzo a mi propio ritmo."
+                </blockquote>
+            </div>
+
+            <div class="card">
+                <h2>🔑 Registro de Espacios Ganados</h2>
+                <p>Anota 1 pequeña evidencia de hoy que demuestre tu capacidad de gestión, autonomía o avance hacia tu vida en Europa:</p>
+                <textarea id="expansion-input" style="width:100%; height:90px; padding:12px; border-radius:12px; border:1px solid var(--border); font-size:0.95rem; resize:none; margin-bottom:12px;" placeholder="Ej: Hoy tomé una decisión sin dudar, leí sobre trámites en Europa o investigué una herramienta de negocios..."></textarea>
+                <button class="btn" onclick="guardarEspacioGanado()">💾 Guardar Espacio Ganado</button>
+            </div>
+
+            <div class="card">
+                <h2>📜 Mi Nueva Casa (Historial)</h2>
+                <div id="expansion-history">
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes espacios registrados.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA SESIONES CON PERSISTENCIA Y CESTO A LA DERECHA -->
         <div id="view-sesiones" class="view">
             <div class="card">
                 <h2>🧘 Sesión 1: Reset Mental Express</h2>
@@ -466,10 +497,13 @@
 
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR -->
+    <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS) -->
     <nav>
         <a class="nav-item active" onclick="cambiarVista('hoy', this)">
             <span class="nav-icon">☀️</span>Hoy
+        </a>
+        <a class="nav-item" onclick="cambiarVista('expansion', this)">
+            <span class="nav-icon">✨</span>Expansión
         </a>
         <a class="nav-item" onclick="cambiarVista('sesiones', this)">
             <span class="nav-icon">🎧</span>Sesiones
@@ -478,7 +512,7 @@
             <span class="nav-icon">🧠</span>Frecuencias
         </a>
         <a class="nav-item" onclick="cambiarVista('gratitud', this)">
-            <span class="nav-icon">✨</span>Gratitud
+            <span class="nav-icon">📜</span>Gratitud
         </a>
     </nav>
 
@@ -505,6 +539,18 @@
             ];
             const random = ejercicios[Math.floor(Math.random() * ejercicios.length)];
             document.getElementById('random-text').innerText = random;
+        }
+
+        function generarMicroLadrillo() {
+            const ladrillos = [
+                "Observa una decisión de hoy y pregúntate: ¿Cómo la resolvería la dueña de mi propio negocio en Europa?",
+                "Dedica 2 minutos a imaginar cómo ordenarías el escritorio de tu propia oficina o casa en Freiburg o Praga.",
+                "Recuerda: No tienes que saber todo sobre emprender hoy. Solo necesitas colocar un ladrillo por día.",
+                "Realiza un trámite o tarea pendiente de hoy con total calma, sintiendo la seguridad de tu autonomía.",
+                "Investiga o aprende durante 3 minutos una palabra nueva en otro idioma o un concepto simple de gestión."
+            ];
+            const random = ladrillos[Math.floor(Math.random() * ladrillos.length)];
+            document.getElementById('expansion-text').innerText = random;
         }
 
         function iniciarRespiracion() {
@@ -694,14 +740,49 @@
             }
 
             contenedor.innerHTML = historial.map(item => `
-                <div class="gratitude-item">
-                    <div class="gratitude-date">📅 ${item.fecha}</div>
+                <div class="history-item">
+                    <div class="history-date">📅 ${item.fecha}</div>
                     <div>${item.texto.replace(/\n/g, '<br>')}</div>
                 </div>
             `).join('');
         }
 
+        /* HISTORIAL DE EXPANSIÓN (ESPACIOS GANADOS) */
+        function guardarEspacioGanado() {
+            const texto = document.getElementById('expansion-input').value.trim();
+            if (!texto) return alert("Escribe un espacio ganado antes de guardar.");
+
+            const fecha = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            let historial = JSON.parse(localStorage.getItem('gym_expansion_historial')) || [];
+            
+            historial.unshift({ fecha: fecha, texto: texto });
+            localStorage.setItem('gym_expansion_historial', JSON.stringify(historial));
+            
+            document.getElementById('expansion-input').value = '';
+            cargarHistorialExpansion();
+            alert("🧱 Espacio ganado guardado en tu nueva casa.");
+        }
+
+        function cargarHistorialExpansion() {
+            const historial = JSON.parse(localStorage.getItem('gym_expansion_historial')) || [];
+            const contenedor = document.getElementById('expansion-history');
+            
+            if (historial.length === 0) {
+                contenedor.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes espacios registrados.</p>';
+                return;
+            }
+
+            contenedor.innerHTML = historial.map(item => `
+                <div class="history-item">
+                    <div class="history-date">🧱 ${item.fecha}</div>
+                    <div>${item.texto.replace(/\n/g, '<br>')}</div>
+                </div>
+            `).join('');
+        }
+
+        // Cargar historiales al iniciar
         cargarHistorialGratitud();
+        cargarHistorialExpansion();
     </script>
 </body>
 </html>
