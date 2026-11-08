@@ -335,6 +335,56 @@
             margin-top: 14px;
             margin-bottom: 0 !important;
         }
+
+        /* Ejercicios de creencias */
+        .etiqueta {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 14px 0 6px;
+        }
+
+        .campo {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text);
+            background: #ffffff;
+            resize: vertical;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .chip {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            margin: 6px 6px 0 0;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.35;
+        }
+
+        .chip:hover {
+            background: var(--active-bg);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: default;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -361,6 +411,7 @@
                     <div class="verse-ref" id="promesa-hoy-ref"></div>
                 </div>
                 <button class="btn btn-secondary" style="margin-top:14px;" onclick="otraPromesa()">🔄 Otra promesa</button>
+                <p class="verse-note">Biblia Reina-Valera 1909, con acentuación actualizada.</p>
             </div>
 
             <div class="card">
@@ -555,14 +606,91 @@
             </div>
         </div>
 
-        <!-- VISTA PROMESAS -->
-        <div id="view-promesas" class="view">
+        <!-- VISTA CREENCIAS: SENTIRME SUFICIENTE -->
+        <div id="view-creencias" class="view">
             <div class="card">
-                <h2>📖 Promesas</h2>
-                <p>Palabras de la Biblia para volver a ellas cuando necesites recordar que no estás sola. Leelas en voz alta, despacio, y quedate con la que te toque hoy.</p>
+                <h2>🌱 Sentirme suficiente</h2>
+                <p>Pensar "no soy suficiente" se siente como un hecho, pero es un hábito de la mente, y los hábitos se entrenan. Hacé un ejercicio por día, no todos juntos. Si ese sentimiento te pesa mucho o hace mucho tiempo que te acompaña, conversarlo con una psicóloga también suma.</p>
             </div>
-            <div id="promesas-lista"></div>
-            <p class="verse-note">Texto: Biblia Reina-Valera 1909 (dominio público), con acentuación actualizada en algunos casos. Las palabras originales conservan su forma antigua, por ejemplo "dificultosas".</p>
+
+            <div class="card">
+                <h2>🔍 Detective de pensamientos</h2>
+                <p>Cuando aparezca "no soy suficiente", anotalo y revisalo como si fueras una detective: un pensamiento no es una prueba.</p>
+
+                <label class="etiqueta" for="det-situacion">1. ¿Qué pasó?</label>
+                <textarea id="det-situacion" class="campo" rows="2" placeholder="Ej: Me pidieron presentar el informe en la reunión."></textarea>
+
+                <label class="etiqueta" for="det-pensamiento">2. ¿Qué pensé?</label>
+                <textarea id="det-pensamiento" class="campo" rows="2" placeholder="Ej: No estoy a la altura, se van a dar cuenta."></textarea>
+
+                <label class="etiqueta" for="det-favor">3. ¿Qué hechos reales apoyan ese pensamiento?</label>
+                <textarea id="det-favor" class="campo" rows="2" placeholder="Solo hechos, no interpretaciones."></textarea>
+
+                <label class="etiqueta" for="det-contra">4. ¿Qué hechos reales lo contradicen?</label>
+                <textarea id="det-contra" class="campo" rows="2" placeholder="Ej: Ya presenté otras veces y salió bien. Me eligieron por mi trabajo."></textarea>
+
+                <label class="etiqueta" for="det-justo">5. ¿Qué le diría a una amiga querida? Escribí una versión más justa:</label>
+                <textarea id="det-justo" class="campo" rows="2" placeholder="Ej: Me preparé, puedo hacerlo y, si algo sale imperfecto, no pierdo mi valor."></textarea>
+
+                <button class="btn" style="margin-top:14px;" onclick="guardarDetective()">💾 Guardar</button>
+            </div>
+
+            <div class="card">
+                <h2>📜 Mis pensamientos revisados</h2>
+                <p>Releelos cuando vuelva la duda: son tus propias pruebas.</p>
+                <button id="btn-toggle-detective" class="btn btn-secondary" onclick="toggleHistorial('detective')">👁️ Mostrar Historial</button>
+                <div id="detective-history-container" class="collapsible-container">
+                    <div id="detective-history">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes pensamientos guardados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔄 De creencia vieja a creencia nueva</h2>
+                <p>No se trata de forzarte a creer algo que hoy no sentís, sino de acercarte paso a paso. Elegí una creencia nueva que te suene posible, aunque sea un poco.</p>
+
+                <label class="etiqueta" for="cre-vieja">Mi creencia de siempre</label>
+                <input type="text" id="cre-vieja" class="campo" placeholder="Ej: Nunca es suficiente lo que hago.">
+
+                <label class="etiqueta" for="cre-vieja-pct">Cuánto la creo hoy: <b id="cre-vieja-val">70</b>%</label>
+                <input type="range" id="cre-vieja-pct" min="0" max="100" value="70" oninput="document.getElementById('cre-vieja-val').innerText = this.value">
+
+                <label class="etiqueta" for="cre-nueva">Mi creencia nueva</label>
+                <input type="text" id="cre-nueva" class="campo" placeholder="Escribila o tocá un ejemplo">
+                <div>
+                    <button class="chip" onclick="usarEjemploCreencia(0)">Estoy en proceso y lo que hago hoy alcanza para dar el próximo paso.</button>
+                    <button class="chip" onclick="usarEjemploCreencia(1)">Puedo equivocarme y seguir valiendo.</button>
+                    <button class="chip" onclick="usarEjemploCreencia(2)">No necesito saberlo todo para ser capaz.</button>
+                    <button class="chip" onclick="usarEjemploCreencia(3)">Mi valor no depende de lo que logro hoy.</button>
+                </div>
+
+                <label class="etiqueta" for="cre-nueva-pct">Cuánto la creo hoy: <b id="cre-nueva-val">30</b>%</label>
+                <input type="range" id="cre-nueva-pct" min="0" max="100" value="30" oninput="document.getElementById('cre-nueva-val').innerText = this.value">
+
+                <p style="margin-top:12px;">Decila en voz alta tres veces, con la mano en el pecho. En unos días volvé a medir: lo importante es ver que el número se mueve.</p>
+                <button class="btn" onclick="guardarCreencia()">💾 Guardar creencia</button>
+            </div>
+
+            <div class="card">
+                <h2>📈 Mis creencias en movimiento</h2>
+                <p>Mirá cómo cambia lo que creés con el tiempo.</p>
+                <button id="btn-toggle-creencias" class="btn btn-secondary" onclick="toggleHistorial('creencias')">👁️ Mostrar Historial</button>
+                <div id="creencias-history-container" class="collapsible-container">
+                    <div id="creencias-history">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes creencias guardadas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🤲 Pausa de autocompasión</h2>
+                <p>Para el momento en que te sientas insuficiente. Poné una mano en el pecho, respirá y leé cada frase despacio. Dura 1 minuto.</p>
+                <blockquote id="pausa-frase" style="background: var(--primary-light); padding: 14px; border-radius: 10px; font-style: italic; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 14px; min-height: 90px;">
+                    Tocá "Empezar" para comenzar.
+                </blockquote>
+                <button id="btn-pausa" class="btn" onclick="iniciarPausa()">▶️ Empezar pausa (1 minuto)</button>
+            </div>
         </div>
 
     </div>
@@ -584,8 +712,8 @@
         <a class="nav-item" onclick="cambiarVista('gratitud', this)">
             <span class="nav-icon">📜</span>Gratitud
         </a>
-        <a class="nav-item" onclick="cambiarVista('promesas', this)">
-            <span class="nav-icon">📖</span>Promesas
+        <a class="nav-item" onclick="cambiarVista('creencias', this)">
+            <span class="nav-icon">🌱</span>Creencias
         </a>
     </nav>
 
@@ -912,37 +1040,161 @@
         }
 
         function promesaDelDia() {
-            // Una promesa distinta por día, estable durante todo el día
-            const hoy = new Date();
-            const diaDelAnio = Math.floor((hoy - new Date(hoy.getFullYear(), 0, 0)) / 86400000);
-            indicePromesa = diaDelAnio % TODAS_PROMESAS.length;
+            // Una promesa al azar cada vez que abrís la app
+            indicePromesa = Math.floor(Math.random() * TODAS_PROMESAS.length);
             mostrarPromesa();
         }
 
         function otraPromesa() {
-            indicePromesa = (indicePromesa + 1) % TODAS_PROMESAS.length;
+            // Al azar, pero nunca la misma que ya estás viendo
+            const salto = 1 + Math.floor(Math.random() * (TODAS_PROMESAS.length - 1));
+            indicePromesa = (indicePromesa + salto) % TODAS_PROMESAS.length;
             mostrarPromesa();
         }
 
-        function cargarListaPromesas() {
-            const cont = document.getElementById('promesas-lista');
-            cont.innerHTML = PROMESAS.map(grupo => `
-                <div class="card">
-                    <h2>${grupo.tema}</h2>
-                    ${grupo.versos.map(v => `
-                        <div class="verse">
-                            <div class="verse-text">“${v.texto}”</div>
-                            <div class="verse-ref">${v.ref}</div>
-                        </div>
-                    `).join('')}
+        /* EJERCICIOS PARA SENTIRME SUFICIENTE */
+        function escaparHTML(t) {
+            return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function fechaHoy() {
+            return new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        function valorCampo(id) {
+            return document.getElementById(id).value.trim();
+        }
+
+        /* Detective de pensamientos */
+        function guardarDetective() {
+            const registro = {
+                fecha: fechaHoy(),
+                situacion: valorCampo('det-situacion'),
+                pensamiento: valorCampo('det-pensamiento'),
+                favor: valorCampo('det-favor'),
+                contra: valorCampo('det-contra'),
+                justo: valorCampo('det-justo')
+            };
+            if (!registro.pensamiento) return alert("Escribe al menos qué pensaste (paso 2) antes de guardar.");
+
+            let historial = JSON.parse(localStorage.getItem('gym_detective_historial')) || [];
+            historial.unshift(registro);
+            localStorage.setItem('gym_detective_historial', JSON.stringify(historial));
+
+            ['det-situacion', 'det-pensamiento', 'det-favor', 'det-contra', 'det-justo'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            cargarHistorialDetective();
+            alert("🔍 Pensamiento guardado. Gracias por cuidarte.");
+        }
+
+        function cargarHistorialDetective() {
+            const historial = JSON.parse(localStorage.getItem('gym_detective_historial')) || [];
+            const contenedor = document.getElementById('detective-history');
+
+            if (historial.length === 0) {
+                contenedor.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes pensamientos guardados.</p>';
+                return;
+            }
+
+            const linea = (titulo, texto) => texto
+                ? `<div style="margin-top:6px;"><strong>${titulo}</strong> ${escaparHTML(texto).replace(/\n/g, '<br>')}</div>`
+                : '';
+
+            contenedor.innerHTML = historial.map(item => `
+                <div class="history-item">
+                    <div class="history-date">🔍 ${item.fecha}</div>
+                    ${linea('Qué pasó:', item.situacion)}
+                    ${linea('Pensé:', item.pensamiento)}
+                    ${linea('A favor:', item.favor)}
+                    ${linea('En contra:', item.contra)}
+                    ${linea('Versión más justa:', item.justo)}
                 </div>
             `).join('');
+        }
+
+        /* De creencia vieja a creencia nueva */
+        const EJEMPLOS_CREENCIAS = [
+            "Estoy en proceso y lo que hago hoy alcanza para dar el próximo paso.",
+            "Puedo equivocarme y seguir valiendo.",
+            "No necesito saberlo todo para ser capaz.",
+            "Mi valor no depende de lo que logro hoy."
+        ];
+
+        function usarEjemploCreencia(i) {
+            document.getElementById('cre-nueva').value = EJEMPLOS_CREENCIAS[i];
+        }
+
+        function guardarCreencia() {
+            const vieja = valorCampo('cre-vieja');
+            const nueva = valorCampo('cre-nueva');
+            if (!vieja || !nueva) return alert("Escribe tu creencia de siempre y tu creencia nueva antes de guardar.");
+
+            let historial = JSON.parse(localStorage.getItem('gym_creencias_historial')) || [];
+            historial.unshift({
+                fecha: fechaHoy(),
+                vieja: vieja,
+                viejaPct: document.getElementById('cre-vieja-pct').value,
+                nueva: nueva,
+                nuevaPct: document.getElementById('cre-nueva-pct').value
+            });
+            localStorage.setItem('gym_creencias_historial', JSON.stringify(historial));
+
+            document.getElementById('cre-vieja').value = '';
+            document.getElementById('cre-nueva').value = '';
+            cargarHistorialCreencias();
+            alert("🔄 Creencia guardada. Repítela en voz alta y vuelve a medirla en unos días.");
+        }
+
+        function cargarHistorialCreencias() {
+            const historial = JSON.parse(localStorage.getItem('gym_creencias_historial')) || [];
+            const contenedor = document.getElementById('creencias-history');
+
+            if (historial.length === 0) {
+                contenedor.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted);">Aún no tienes creencias guardadas.</p>';
+                return;
+            }
+
+            contenedor.innerHTML = historial.map(item => `
+                <div class="history-item">
+                    <div class="history-date">🔄 ${item.fecha}</div>
+                    <div style="margin-top:6px;"><strong>Antes:</strong> ${escaparHTML(item.vieja)} (${item.viejaPct}%)</div>
+                    <div style="margin-top:6px;"><strong>Ahora:</strong> ${escaparHTML(item.nueva)} (${item.nuevaPct}%)</div>
+                </div>
+            `).join('');
+        }
+
+        /* Pausa de autocompasión (1 minuto) */
+        let pausaTimers = [];
+
+        function iniciarPausa() {
+            const frase = document.getElementById('pausa-frase');
+            const btn = document.getElementById('btn-pausa');
+            const pasos = [
+                "1 · Atención. Esto es un momento difícil. Me duele sentirme insuficiente, y está bien reconocerlo.",
+                "2 · Humanidad compartida. Sentirse así es parte de ser humana. Muchas personas se sienten así a veces. No estoy sola en esto.",
+                "3 · Amabilidad. Que pueda tratarme con la misma ternura con la que trataría a una amiga que lo está pasando mal."
+            ];
+
+            pausaTimers.forEach(clearTimeout);
+            pausaTimers = [];
+            btn.disabled = true;
+
+            pasos.forEach((texto, i) => {
+                pausaTimers.push(setTimeout(() => { frase.innerText = texto; }, i * 20000));
+            });
+            pausaTimers.push(setTimeout(() => {
+                frase.innerText = "Respira hondo una vez más. Gracias por cuidarte.";
+                btn.disabled = false;
+                btn.innerText = "▶️ Repetir pausa";
+            }, 60000));
         }
 
         // Cargar historiales al iniciar
         cargarHistorialGratitud();
         cargarHistorialExpansion();
-        cargarListaPromesas();
+        cargarHistorialDetective();
+        cargarHistorialCreencias();
         promesaDelDia();
     </script>
 </body>
