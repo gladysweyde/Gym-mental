@@ -302,6 +302,39 @@
 
         .view { display: none; }
         .view.active { display: block; }
+
+        /* Promesas */
+        .nav-item { font-size: 0.66rem; }
+
+        .verse {
+            background: var(--primary-light);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 12px;
+        }
+
+        .verse-text {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.02rem;
+            line-height: 1.55;
+            color: var(--text);
+        }
+
+        .verse-ref {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 0.3px;
+        }
+
+        .verse-note {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 14px;
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
 <body>
@@ -319,6 +352,15 @@
                 <h2>☀️ Práctica del Día</h2>
                 <p id="random-text">Toca el botón para recibir un micro-ejercicio de presencia consciente e intencionalidad somática.</p>
                 <button class="btn" onclick="generarEjercicioRandom()">🎲 Generar Ejercicio Aleatorio</button>
+            </div>
+
+            <div class="card">
+                <h2>📖 Promesa para hoy</h2>
+                <div class="verse">
+                    <div class="verse-text" id="promesa-hoy-texto"></div>
+                    <div class="verse-ref" id="promesa-hoy-ref"></div>
+                </div>
+                <button class="btn btn-secondary" style="margin-top:14px;" onclick="otraPromesa()">🔄 Otra promesa</button>
             </div>
 
             <div class="card">
@@ -513,6 +555,16 @@
             </div>
         </div>
 
+        <!-- VISTA PROMESAS -->
+        <div id="view-promesas" class="view">
+            <div class="card">
+                <h2>📖 Promesas</h2>
+                <p>Palabras de la Biblia para volver a ellas cuando necesites recordar que no estás sola. Leelas en voz alta, despacio, y quedate con la que te toque hoy.</p>
+            </div>
+            <div id="promesas-lista"></div>
+            <p class="verse-note">Texto: Biblia Reina-Valera 1909 (dominio público), con acentuación actualizada en algunos casos. Las palabras originales conservan su forma antigua, por ejemplo "dificultosas".</p>
+        </div>
+
     </div>
 
     <!-- NAVEGACIÓN INFERIOR -->
@@ -531,6 +583,9 @@
         </a>
         <a class="nav-item" onclick="cambiarVista('gratitud', this)">
             <span class="nav-icon">📜</span>Gratitud
+        </a>
+        <a class="nav-item" onclick="cambiarVista('promesas', this)">
+            <span class="nav-icon">📖</span>Promesas
         </a>
     </nav>
 
@@ -812,9 +867,83 @@
             `).join('');
         }
 
+        /* PROMESAS BÍBLICAS (Reina-Valera 1909) */
+        const PROMESAS = [
+            {
+                tema: "🤍 No estás sola",
+                versos: [
+                    { ref: "Deuteronomio 31:6", texto: "Esforzaos y cobrad ánimo; no temáis, ni tengáis miedo de ellos: que Jehová tu Dios es el que va contigo: no te dejará ni te desamparará." },
+                    { ref: "Deuteronomio 31:8", texto: "Y Jehová es el que va delante de ti; él será contigo, no te dejará, ni te desamparará; no temas, ni te intimides." },
+                    { ref: "Josué 1:5", texto: "Como yo fui con Moisés, seré contigo; no te dejaré, ni te desampararé." },
+                    { ref: "Josué 1:9", texto: "Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Jehová tu Dios será contigo en donde quiera que fueres." },
+                    { ref: "Mateo 28:20 (Jesús)", texto: "…y he aquí, yo estoy con vosotros todos los días…" },
+                    { ref: "Juan 14:18 (Jesús)", texto: "No os dejaré huérfanos; vendré a vosotros." }
+                ]
+            },
+            {
+                tema: "🛡️ Él te sostiene",
+                versos: [
+                    { ref: "Isaías 41:10", texto: "No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia." },
+                    { ref: "Salmo 23:4", texto: "Aunque ande en valle de sombra de muerte, no temeré mal alguno; porque tú estarás conmigo: tu vara y tu cayado me infundirán aliento." }
+                ]
+            },
+            {
+                tema: "📞 Él te escucha",
+                versos: [
+                    { ref: "Jeremías 33:3", texto: "Clama a mí, y te responderé, y te enseñaré cosas grandes y dificultosas que tú no sabes." }
+                ]
+            },
+            {
+                tema: "🌿 Bendición",
+                versos: [
+                    { ref: "Números 6:24-26", texto: "Jehová te bendiga, y te guarde: haga resplandecer Jehová su rostro sobre ti, y haya de ti misericordia: Jehová alce a ti su rostro, y ponga en ti paz." },
+                    { ref: "Salmo 23:6", texto: "Ciertamente el bien y la misericordia me seguirán todos los días de mi vida: y en la casa de Jehová moraré por largos días." }
+                ]
+            }
+        ];
+
+        const TODAS_PROMESAS = PROMESAS.flatMap(g => g.versos);
+        let indicePromesa = 0;
+
+        function mostrarPromesa() {
+            const v = TODAS_PROMESAS[indicePromesa];
+            document.getElementById('promesa-hoy-texto').innerText = "“" + v.texto + "”";
+            document.getElementById('promesa-hoy-ref').innerText = v.ref;
+        }
+
+        function promesaDelDia() {
+            // Una promesa distinta por día, estable durante todo el día
+            const hoy = new Date();
+            const diaDelAnio = Math.floor((hoy - new Date(hoy.getFullYear(), 0, 0)) / 86400000);
+            indicePromesa = diaDelAnio % TODAS_PROMESAS.length;
+            mostrarPromesa();
+        }
+
+        function otraPromesa() {
+            indicePromesa = (indicePromesa + 1) % TODAS_PROMESAS.length;
+            mostrarPromesa();
+        }
+
+        function cargarListaPromesas() {
+            const cont = document.getElementById('promesas-lista');
+            cont.innerHTML = PROMESAS.map(grupo => `
+                <div class="card">
+                    <h2>${grupo.tema}</h2>
+                    ${grupo.versos.map(v => `
+                        <div class="verse">
+                            <div class="verse-text">“${v.texto}”</div>
+                            <div class="verse-ref">${v.ref}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
         // Cargar historiales al iniciar
         cargarHistorialGratitud();
         cargarHistorialExpansion();
+        cargarListaPromesas();
+        promesaDelDia();
     </script>
 </body>
 </html>
